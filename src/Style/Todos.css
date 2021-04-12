@@ -1,0 +1,32 @@
+.todosSection {
+  padding: 0rem 1.5rem 1rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.3em;
+}
+.todosSection .todosItem {
+  background-color: var(--cardBg);
+  padding: 0.5em 1em;
+  font-family: var(--Yanone);
+  font-weight: 400;
+  line-height: 1.2em;
+  font-size: 1.3em;
+  cursor: pointer;
+  filter: drop-shadow(0px 1px 12px rgba(0, 0, 0, 0.1));
+}
+.todosSection .todosItem:hover {
+  background-color: var(--borderPrimaryColor);
+}
+.todosItem {
+  display: flex;
+  flex-direction: column;
+}
+.todosItem span {
+  font-family: var(--poppins);
+  color: var(--gray3);
+  font-size: 0.55em;
+  border-top: 1px solid var(--borderPrimaryColor);
+}
+
+@media screen and (min-width: 320px) and (max-width: 480px) {
+}

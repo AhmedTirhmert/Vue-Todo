@@ -1,7 +1,7 @@
 <template>
   <div class="mainLayout">
-    <app-header />
-    <main class="mainContent">
+    <app-header :isOpen="isOpen" @toggle-dd="isOpen = !isOpen" />
+    <main class="mainContent" @click="toggleIt">
       <router-view />
     </main>
   </div>
@@ -10,7 +10,17 @@
 <script>
 export default {
   components: {
-    appHeader: () => import("../components/Header"),
+    appHeader: () => import("../components/Header/Header"),
+  },
+  data() {
+    return {
+      isOpen: false,
+    };
+  },
+  methods: {
+    toggleIt() {
+      this.isOpen = false;
+    },
   },
 };
 </script>

@@ -9,7 +9,9 @@
         @click="$emit('TodoClicked', todo.list_id)"
       >
         <p>{{ todo.content }}</p>
-        <span>{{ todo.created_at | carbonJs() }}</span>
+        <span class="text--italic text--end mt-sm">{{
+          todo.created_at | carbonJs()
+        }}</span>
       </div>
     </section>
   </div>

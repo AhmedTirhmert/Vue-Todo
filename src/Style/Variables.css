@@ -8,11 +8,13 @@
 :root {
   --primaryColor: #1d3557;
   --secondaryColor: #457b9d;
-  --notWhite: #f1faee;
+  --notWhite: #eef6fa;
   --red: #e63946;
   --cardBg: #f4f9f4;
   --silver: #c0c0c0;
   --black: #000;
+  --danger: #e63946;
+  --success: #2a9d8f;
   /* --------------FONTS-------------- */
   --poppins: "Poppins";
   --Yanone: "Yanone Kaffeesatz";

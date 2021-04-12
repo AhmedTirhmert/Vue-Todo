@@ -26,7 +26,8 @@ export default {
       },
       todos: {
         todo1: {
-          content: "1 Mile Runing",
+          content:
+            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam ducimus nihil dignissimos voluptatibus illo quisquam laudantium sunt, dolor unde repellat.",
           list_id: "list1",
           created_at: Date.now() + Math.floor(Math.random() * 10),
         },
@@ -64,6 +65,16 @@ export default {
           content: "Prepase presentation",
           list_id: "list2",
           created_at: Date.now() + Math.floor(Math.random() * 10),
+        },
+        todo9: {
+          content: "Prepase presentation",
+          list_id: "list2",
+          created_at: Date.now() - Math.floor(Math.random() * 2122313248),
+        },
+        todo10: {
+          content: "Prepase presentation",
+          list_id: "list2",
+          created_at: Date.now() - Math.floor(Math.random() * 10216431),
         },
       },
     };

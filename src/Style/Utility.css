@@ -22,15 +22,22 @@
   color: var(--gray7);
 }
 /* --------------TEXT ALIGN-------------- */
-.text-center {
+.text--center {
   text-align: center;
 }
-.text-italic {
+.text--end {
+  text-align: end;
+}
+.text--start {
+  text-align: start;
+}
+.text--italic {
   font-style: italic;
 }
 .text--uppercase {
   text-transform: uppercase;
 }
+
 /* ---------------MARGINS--------------- */
 .mb-xs {
   margin-bottom: 0.3rem;
@@ -46,6 +53,56 @@
 }
 .mb-xl {
   margin-bottom: 3rem;
+}
+/* -----------------0 */
+.mt-xs {
+  margin-top: 0.3rem;
+}
+.mt-sm {
+  margin-top: 0.5rem;
+}
+.mt-md {
+  margin-top: 1rem;
+}
+.mt-lg {
+  margin-top: 2rem;
+}
+.mt-xl {
+  margin-top: 3rem;
+}
+/* MX */
+.mx-xs {
+  margin-right: 0.3em;
+  margin-left: 0.3em;
+}
+.mx-sm {
+  margin-right: 0.5em;
+  margin-left: 0.5em;
+}
+.mx-md {
+  margin-right: 1em;
+  margin-left: 1em;
+}
+.mx-lg {
+  margin-right: 2em;
+  margin-left: 2em;
+}
+/* MY */
+.my-xs {
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
+}
+.my-sm {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+.my-md {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.my-lg {
+  margin-top: 2em;
+  margin-bottom: 2em;
 }
 /* ---------------PADDINGS--------------- */
 /* PX */
@@ -103,10 +160,11 @@
 .radius-lg {
   border-radius: 2rem;
 }
+
 /* --------------*------BUTTONS--------------*------ */
 .btn {
   border: none;
-  color: var(--notWhite);
+  color: white;
   cursor: pointer;
   font-family: var(--ubuntu);
 }

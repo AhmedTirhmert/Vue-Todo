@@ -22,3 +22,14 @@
 .mainContent::-webkit-scrollbar-thumb {
   background-color: var(--primaryColor);
 }
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .mainLayout .mainContent {
+    padding: 1em 20vw;
+  }
+}
+@media screen and (min-width: 1025px) {
+  .mainLayout .mainContent {
+    padding: 1em 25vw;
+  }
+}

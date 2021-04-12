@@ -1,6 +1,6 @@
 <template>
   <section class="list">
-    <h1 class="text-center py-sm radius-sm text-italic mb-xl">
+    <h1 class="text--center py-sm radius-sm text--italic mb-xl">
       <span class="">List Details : </span>
       <span class="text--uppercase text--gray3">{{
         $route.params.listId
@@ -20,7 +20,8 @@ export default {
     return {
       todos: {
         todo4: {
-          content: "create todo app",
+          content:
+            "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta consectetur quo obcaecati facere totam alias temporibus dolores eligendi nam dolorum.",
           list_id: "list2",
           created_at: Date.now() - Math.floor(Math.random() * 1001220250),
         },
