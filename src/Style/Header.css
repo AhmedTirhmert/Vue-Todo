@@ -1,0 +1,148 @@
+@import url("Variables.css");
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 15px 10px;
+  background-color: var(--primaryColor);
+  color: var(--notWhite);
+  display: flex;
+  justify-content: space-between;
+}
+
+.header .logo {
+  font-weight: 700;
+  margin: 0px 5px;
+  font-size: 1.3rem;
+  color: var(--notWhite);
+}
+.header .btn {
+  padding: 5px 20px;
+  font-size: 1rem;
+  margin: 0px 5px;
+  /* border: 1px solid var(--notWhite); */
+  border-radius: 1rem;
+  /* background-color: var(--red); */
+}
+
+.logo {
+  margin: 0px 5px;
+}
+.login {
+  margin: 0px 5px;
+}
+
+.login .btn .icon::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  font-size: 1rem;
+  content: "\f2f6";
+  text-align: start;
+}
+.login .btn span {
+  display: none;
+}
+.login .btn i {
+  display: none;
+}
+
+/* .header .login :hover {
+  background-color: var(--secondaryColor);
+  transform: scale(1.07);
+  border: none;
+} */
+/* --------------LO-GOUT------------------- */
+.logout {
+  margin: 0px 5px;
+}
+.logout .btn .icon::before {
+  font-family: "Font Awesome 5 Free";
+  font-size: 1rem;
+  content: "\f2f5";
+  margin-left: 6px;
+}
+.logout .btn span {
+  display: none;
+}
+.logout .btn i {
+  display: none;
+}
+
+/* .header .logout :hover {
+  background-color: var(--secondaryColor);
+  transform: scale(1.07);
+} */
+/* MOBILE LAYOUT */
+@media screen and (min-width: 320px) and (max-width: 480px) {
+  .header .logo {
+    font-weight: 500;
+  }
+  .header .btn {
+    padding: 5px 0px;
+  }
+  .header .btn .icon::before {
+    font-size: 1.3rem;
+  }
+  .header .btn i {
+    display: inline-block;
+  }
+}
+/* TABLET/IPAD LAYOUT */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  .header .logo {
+    font-weight: 600;
+  }
+  .header .btn i {
+    display: inline-block;
+  }
+  .header .btn .icon::before {
+    font-size: 1.4rem;
+  }
+  .header .btn {
+    padding: 5px 0px;
+  }
+}
+/* SMALL SCREENS / LAPTOPS */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .header .btn span {
+    display: inline-block;
+  }
+  .header .btn {
+    border: 1px solid var(--notWhite);
+    border-radius: 2rem;
+  }
+  .header .login :hover {
+    background-color: var(--secondaryColor);
+    transform: scale(0.9);
+  }
+}
+/* LARGER SCREENS / DESKTOP */
+@media screen and (min-width: 1025px) and (max-width: 1200px) {
+  .header .btn span {
+    display: inline-block;
+  }
+  .header .btn {
+    border: 1px solid var(--notWhite);
+    border-radius: 2rem;
+  }
+  .header .login :hover {
+    background-color: var(--secondaryColor);
+    transform: scale(0.9);
+  }
+}
+/* WIDE SCREENS / TVs */
+@media screen and (min-width: 1201px) {
+  .header .btn span {
+    display: inline-block;
+  }
+  .header .btn {
+    border: 1px solid var(--notWhite);
+    border-radius: 2rem;
+  }
+  .header .login :hover {
+    background-color: var(--secondaryColor);
+    transform: scale(0.9);
+  }
+}

@@ -1,0 +1,115 @@
+@import url("Variables.css");
+/* ------------TEXT COLORS CLESSES------------ */
+.text--gray1 {
+  color: var(--gray1);
+}
+.text--gray2 {
+  color: var(--gray2);
+}
+.text--gray3 {
+  color: var(--gray3);
+}
+.text--gray4 {
+  color: var(--gray4);
+}
+.text--gray4 {
+  color: var(--gray4);
+}
+.text--gray6 {
+  color: var(--gray6);
+}
+.text--gray7 {
+  color: var(--gray7);
+}
+/* --------------TEXT ALIGN-------------- */
+.text-center {
+  text-align: center;
+}
+.text-italic {
+  font-style: italic;
+}
+.text--uppercase {
+  text-transform: uppercase;
+}
+/* ---------------MARGINS--------------- */
+.mb-xs {
+  margin-bottom: 0.3rem;
+}
+.mb-sm {
+  margin-bottom: 0.5rem;
+}
+.mb-md {
+  margin-bottom: 1rem;
+}
+.mb-lg {
+  margin-bottom: 2rem;
+}
+.mb-xl {
+  margin-bottom: 3rem;
+}
+/* ---------------PADDINGS--------------- */
+/* PX */
+.px-xs {
+  padding-right: 0.3em;
+  padding-left: 0.3em;
+}
+.px-sm {
+  padding-right: 0.5em;
+  padding-left: 0.5em;
+}
+.px-md {
+  padding-right: 1em;
+  padding-left: 1em;
+}
+.px-lg {
+  padding-right: 2em;
+  padding-left: 2em;
+}
+/* PY */
+.py-xl {
+  padding-top: 3em;
+  padding-bottom: 3em;
+}
+.py-xs {
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+}
+.py-sm {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+.py-md {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+.py-lg {
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+.py-xl {
+  padding-top: 3em;
+  padding-bottom: 3em;
+}
+/* --------------BORDER RADIUS--------------  */
+.radius-xs {
+  border-radius: 0.3rem;
+}
+.radius-sm {
+  border-radius: 0.5rem;
+}
+.radius-md {
+  border-radius: 1rem;
+}
+.radius-lg {
+  border-radius: 2rem;
+}
+/* --------------*------BUTTONS--------------*------ */
+.btn {
+  border: none;
+  color: var(--notWhite);
+  cursor: pointer;
+  font-family: var(--ubuntu);
+}
+.btn-primary {
+  background-color: var(--primaryColor);
+}

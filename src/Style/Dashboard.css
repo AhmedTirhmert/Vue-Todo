@@ -1,0 +1,77 @@
+@import url("Variables.css");
+
+.dashboard {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.listsBox {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  position: relative;
+  margin-bottom: 3em;
+}
+.listsBox > h2 {
+  position: relative;
+  top: -1.3rem;
+  left: 1em;
+  background-color: var(--notWhite);
+  width: max-content;
+  padding: 0 1rem;
+  color: var(--gray4);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.listsBox > span {
+  position: relative;
+  left: 1.5em;
+  top: -1.3em;
+}
+/* LISTS SECTION */
+.listsSection {
+  padding: 0rem 1.5rem 1rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.2em;
+}
+.listsSection .listsItem {
+  background-color: var(--gray1);
+  padding: 0.5em 1em;
+  font-family: var(--Yanone);
+  font-weight: 400;
+  font-size: 1.3em;
+  cursor: pointer;
+}
+.listsSection .listsItem:hover {
+  background-color: var(--gray2);
+}
+.viewMoreSection {
+  display: flex;
+  margin-top: 0.7em;
+  justify-content: flex-end;
+}
+/* TODOS SECTIN  */
+.todosSection {
+  padding: 0rem 1.5rem 1rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.2em;
+}
+.todosSection .todosItem {
+  background-color: var(--gray1);
+  padding: 0.5em 1em;
+  font-family: var(--Yanone);
+  font-weight: 400;
+  font-size: 1.3em;
+  cursor: pointer;
+}
+.todosSection .todosItem:hover {
+  background-color: var(--gray2);
+}
+.todosItem {
+  display: flex;
+  justify-content: space-between;
+}
+.todosItem span {
+  font-family: var(--ubuntu);
+  font-size: 0.67em;
+  font-weight: 300;
+}
