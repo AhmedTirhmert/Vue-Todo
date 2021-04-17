@@ -21,8 +21,20 @@
 .text--gray7 {
   color: var(--gray7);
 }
-.text--secondaryColor {
-  color: var(--secondaryColor);
+.color--secondary {
+  color: var(--secondaryColor) !important;
+}
+.color--primary {
+  color: #a3b18a !important;
+}
+.color--heading1 {
+  color: var(--heading1Color) !important;
+}
+.color--heading2 {
+  color: var(--heading2Color) !important;
+}
+.color--danger {
+  color: var(--danger) !important;
 }
 /* --------------TEXT ALIGN-------------- */
 .text--center {
@@ -110,45 +122,45 @@
 /* ---------------PADDINGS--------------- */
 /* PX */
 .px-xs {
-  padding-right: 0.3em;
-  padding-left: 0.3em;
+  padding-right: 0.3em !important;
+  padding-left: 0.3em !important;
 }
 .px-sm {
-  padding-right: 0.5em;
-  padding-left: 0.5em;
+  padding-right: 0.5em !important;
+  padding-left: 0.5em !important;
 }
 .px-md {
-  padding-right: 1em;
-  padding-left: 1em;
+  padding-right: 1em !important;
+  padding-left: 1em !important;
 }
 .px-lg {
-  padding-right: 2em;
-  padding-left: 2em;
+  padding-right: 2em !important;
+  padding-left: 2em !important;
 }
 /* PY */
 .py-xl {
-  padding-top: 3em;
-  padding-bottom: 3em;
+  padding-top: 3em !important;
+  padding-bottom: 3em !important;
 }
 .py-xs {
-  padding-top: 0.3em;
-  padding-bottom: 0.3em;
+  padding-top: 0.3em !important;
+  padding-bottom: 0.3em !important;
 }
 .py-sm {
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
+  padding-top: 0.5em !important;
+  padding-bottom: 0.5em !important;
 }
 .py-md {
-  padding-top: 1em;
-  padding-bottom: 1em;
+  padding-top: 1em !important;
+  padding-bottom: 1em !important;
 }
 .py-lg {
-  padding-top: 2em;
-  padding-bottom: 2em;
+  padding-top: 2em !important;
+  padding-bottom: 2em !important;
 }
 .py-xl {
-  padding-top: 3em;
-  padding-bottom: 3em;
+  padding-top: 3em !important;
+  padding-bottom: 3em !important;
 }
 /* --------------BORDER RADIUS--------------  */
 .radius-xs {

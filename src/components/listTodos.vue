@@ -1,6 +1,9 @@
 <template>
   <div class="listBox radius-xs">
-    <h2 class="radius-sm listTitle px-md">{{ listTitle }}</h2>
+    <div class="listTitle">
+      <h2 class="radius-sm px-lg py-xs color--heading2">{{ listTitle }}</h2>
+    </div>
+
     <section class="todosSection">
       <todo
         v-for="(todo, key) in Todos"
@@ -15,7 +18,7 @@
 
 <script>
 export default {
-  name: "List",
+  name: "listTodos",
   components: {
     Todo: () => import("../components/Todo"),
   },

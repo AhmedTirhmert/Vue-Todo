@@ -1,12 +1,12 @@
 <template>
   <section class="list">
-    <h1 class="text--center py-sm radius-sm text--italic mb-xl">
+    <!-- <h1 class="text--center py-sm radius-sm text--italic mb-xl">
       <span class="">List Details : </span>
       <span class="text--uppercase text--secondaryColor">{{
         $route.params.listId
       }}</span>
-    </h1>
-    <list :listTitle="$route.params.listId" :Todos="todos" />
+    </h1> -->
+    <list-todos :listTitle="$route.params.listId" :Todos="todos" />
   </section>
 </template>
 
@@ -14,7 +14,7 @@
 export default {
   name: "ListView",
   components: {
-    list: () => import("../components/listComponent"),
+    listTodos: () => import("../components/listTodos"),
   },
   data() {
     return {

@@ -1,0 +1,83 @@
+/* LISTS SECTION */
+.listsSection {
+  padding: 0rem 1.5rem 1rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5em;
+}
+.listsSection .listsItem {
+  background-color: var(--cardBg);
+  padding: 0.5em 1em 0 1em;
+  font-family: var(--Yanone);
+  font-weight: 400;
+  font-size: 1.3em;
+  cursor: pointer;
+  filter: drop-shadow(0px 1px 12px rgba(0, 0, 0, 0.1));
+}
+.listsSection .listsItem:hover {
+  background-color: hsl(120, 17%, 49%);
+  color: white;
+}
+.viewMoreSection {
+  display: flex;
+  margin-top: 0.7em;
+  justify-content: flex-end;
+}
+.viewMoreSection .btn {
+  background-color: var(--secondaryColor);
+}
+.viewMoreSection .btn:hover {
+  /* background-color: white;
+  color: var(--primaryColor);
+  filter: drop-shadow(0px 1px 12px rgba(0, 0, 0, 0.2)); */
+  background-color: var(--primaryColor);
+}
+.noListsSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  font-family: var(--ubuntu);
+  font-size: 1.8rem;
+  color: var(--gray3);
+  font-weight: 500;
+}
+
+.listContainner {
+  display: grid;
+  grid-template-columns: 11fr 1fr;
+  gap: 0.7em;
+}
+.listAction {
+  background-color: var(--cardBg);
+  border: 1px solid var(--borderPrimaryColor);
+  padding: 0.5em 0.6em;
+  outline: none;
+  font-size: 1em;
+  margin-left: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.listAction:hover {
+  filter: drop-shadow(1px 1px 5px rgba(0, 0, 0, 0.3));
+}
+.listInput {
+  border: none;
+  padding: 0.7em 0.5em 0.5em 0.5em;
+  resize: none;
+  border-radius: 0.5rem;
+  font-family: var(--Yanone);
+  font-weight: 500;
+  letter-spacing: 1px;
+  line-height: 1.2em;
+  font-size: 1.3em;
+  outline: none;
+  background-color: var(--cardBg);
+  display: block;
+  color: var(--gray4);
+  filter: drop-shadow(5px 5px 1px rgba(0, 0, 0, 0.2));
+  border: 1px solid var(--borderPrimaryColor);
+}
+.listInput:focus {
+  color: black;
+}

@@ -31,8 +31,7 @@ const routes = [
   {
     path: "/lists",
     name: "Lists",
-    component: () =>
-      import(/* webpackChunkName: "register" */ "../views/Auth/Register"),
+    component: () => import(/* webpackChunkName: "Lists" */ "../views/Lists"),
   },
 ];
 

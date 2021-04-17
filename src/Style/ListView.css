@@ -3,14 +3,15 @@
 .list {
   display: flex;
   flex-direction: column;
+  margin-top: 4rem;
 }
-.list > h1 {
+/* .list > h1 {
   background-color: var(--cardBg);
   filter: drop-shadow(0px 1px 12px rgba(0, 0, 0, 0.07));
 }
 .list > h1 > span {
   font-style: none;
-}
+} */
 .listBox {
   position: relative;
   margin-bottom: 3em;
@@ -19,13 +20,20 @@
   filter: drop-shadow(0px 1px 12px rgba(0, 0, 0, 0.07));
 }
 .listTitle {
+  display: flex;
+  justify-content: center;
   position: relative;
-  left: 1em;
-  top: -1.3rem;
+  width: 100%;
+  top: -2rem;
+}
+.listTitle h2 {
+  max-width: fit-content;
   background: var(--cardBg);
-  max-width: max-content;
   border: 1px solid var(--borderPrimaryColor);
-  font-weight: 500;
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 .listSection {
   padding: 0rem 1.5rem 1rem 1.5rem;

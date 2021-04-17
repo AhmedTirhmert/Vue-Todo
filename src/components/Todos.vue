@@ -1,6 +1,6 @@
 <template>
   <div class="listsBox radius-xs">
-    <h2 class="radius-sm">Latest Todos</h2>
+    <h2 class="radius-sm color--heading2">Latest Todos</h2>
     <section class="todosSection">
       <todo
         v-for="(todo, key) in Todos"
