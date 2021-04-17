@@ -1,0 +1,186 @@
+@import url("Variables.css");
+/* ------------TEXT COLORS CLESSES------------ */
+.text--gray1 {
+  color: var(--gray1);
+}
+.text--gray2 {
+  color: var(--gray2);
+}
+.text--gray3 {
+  color: var(--gray3);
+}
+.text--gray4 {
+  color: var(--gray4);
+}
+.text--gray4 {
+  color: var(--gray4);
+}
+.text--gray6 {
+  color: var(--gray6);
+}
+.text--gray7 {
+  color: var(--gray7);
+}
+.text--secondaryColor {
+  color: var(--secondaryColor);
+}
+/* --------------TEXT ALIGN-------------- */
+.text--center {
+  text-align: center;
+}
+.text--end {
+  text-align: end;
+}
+.text--start {
+  text-align: start;
+}
+.text--italic {
+  font-style: italic;
+}
+.text--uppercase {
+  text-transform: uppercase;
+}
+
+/* ---------------MARGINS--------------- */
+.mb-xs {
+  margin-bottom: 0.3rem;
+}
+.mb-sm {
+  margin-bottom: 0.5rem;
+}
+.mb-md {
+  margin-bottom: 1rem;
+}
+.mb-lg {
+  margin-bottom: 2rem;
+}
+.mb-xl {
+  margin-bottom: 3rem;
+}
+/* -----------------0 */
+.mt-xs {
+  margin-top: 0.3rem;
+}
+.mt-sm {
+  margin-top: 0.5rem;
+}
+.mt-md {
+  margin-top: 1rem;
+}
+.mt-lg {
+  margin-top: 2rem;
+}
+.mt-xl {
+  margin-top: 3rem;
+}
+/* MX */
+.mx-xs {
+  margin-right: 0.3em;
+  margin-left: 0.3em;
+}
+.mx-sm {
+  margin-right: 0.5em;
+  margin-left: 0.5em;
+}
+.mx-md {
+  margin-right: 1em;
+  margin-left: 1em;
+}
+.mx-lg {
+  margin-right: 2em;
+  margin-left: 2em;
+}
+/* MY */
+.my-xs {
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
+}
+.my-sm {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+.my-md {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.my-lg {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+/* ---------------PADDINGS--------------- */
+/* PX */
+.px-xs {
+  padding-right: 0.3em;
+  padding-left: 0.3em;
+}
+.px-sm {
+  padding-right: 0.5em;
+  padding-left: 0.5em;
+}
+.px-md {
+  padding-right: 1em;
+  padding-left: 1em;
+}
+.px-lg {
+  padding-right: 2em;
+  padding-left: 2em;
+}
+/* PY */
+.py-xl {
+  padding-top: 3em;
+  padding-bottom: 3em;
+}
+.py-xs {
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+}
+.py-sm {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+.py-md {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+.py-lg {
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+.py-xl {
+  padding-top: 3em;
+  padding-bottom: 3em;
+}
+/* --------------BORDER RADIUS--------------  */
+.radius-xs {
+  border-radius: 0.3rem;
+}
+.radius-sm {
+  border-radius: 0.5rem;
+}
+.radius-md {
+  border-radius: 1rem;
+}
+.radius-lg {
+  border-radius: 2rem;
+}
+
+/* --------------*------BUTTONS--------------*------ */
+.btn {
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-family: var(--ubuntu);
+}
+.btn-primary {
+  background-color: var(--primaryColor);
+}
+/* ----------------------FLEX---------------------- */
+.flex {
+  display: flex;
+}
+.justify-space-between {
+  justify-content: space-between;
+}
+.flex-center {
+  justify-content: center;
+}

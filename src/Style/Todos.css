@@ -1,0 +1,107 @@
+@import url("../Style/Variables.css");
+.todosSection {
+  padding: 0rem 1.5rem 1rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.3em;
+}
+.todosItem {
+  background-color: var(--cardBg);
+  padding: 0.5em 1em;
+  font-family: var(--Yanone);
+  font-weight: 400;
+  line-height: 1.2em;
+  font-size: 1.3em;
+  cursor: pointer;
+  filter: drop-shadow(0px 1px 12px rgba(0, 0, 0, 0.1));
+}
+.todosItem:hover {
+  background-color: hsl(120, 17%, 49%);
+  color: white;
+}
+.todosItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.todoInput {
+  border: none;
+  padding: 0.7em 1em 0.7em 0.7em;
+  width: 100%;
+  overflow: hidden;
+  resize: none;
+  border-radius: 0.5rem;
+  font-family: var(--ubuntu);
+  font-size: 01rem;
+  outline: none;
+  background-color: var(--cardBg);
+  display: block;
+  height: fit-content;
+}
+.todoInput:focus {
+  color: var(--primaryColor);
+  filter: drop-shadow(0px 1px 12px rgba(0, 0, 0, 0.1));
+}
+.listTodosItem {
+  display: flex;
+  flex-direction: column;
+}
+.todosSection {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+.todosSection .listTodosItem {
+  display: flex;
+  padding: 0;
+}
+.listTodoDate {
+  font-size: 0.7em;
+}
+.listBox {
+  position: relative;
+  margin-bottom: 3em;
+}
+.listTodoContainer {
+  display: grid;
+  grid-template-columns: 10fr 2fr;
+}
+.listTodoContainer .listTodoContent {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.todoActions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
+  gap: 1em;
+  margin-left: 1em;
+}
+.todoActions .btn {
+  margin: auto auto;
+  padding: 0.5em;
+  background-color: var(--cardBg);
+  outline: none;
+  font-size: 1em;
+  border: 1px solid var(--borderPrimaryColor);
+}
+.todoActions .btn:hover {
+  filter: drop-shadow(0px 1px 12px rgba(0, 0, 0, 0.2));
+}
+.listTodoDone > i::before {
+  font-family: "Font Awesome 5 Free";
+  content: "\f00c";
+  color: var(--success);
+}
+.listDeleteTodo > i::before {
+  font-family: "Font Awesome 5 Free";
+  content: "\f1f8";
+  color: var(--danger);
+}
+
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  .todoInput {
+    font-size: 1.1rem;
+  }
+}
+@media screen and (min-width: 320px) and (max-width: 480px) {
+}

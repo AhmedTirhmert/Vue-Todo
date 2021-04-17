@@ -1,0 +1,27 @@
+@import url("Variables.css");
+@import url("Todos.css");
+@import url("Lists.css");
+
+.dashboard {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+/* LISTS/TODOS COMUN CSS */
+.listsBox {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  position: relative;
+  margin-bottom: 3em;
+}
+.listsBox > h2 {
+  position: relative;
+  top: -1.3rem;
+  left: 1em;
+  background-color: var(--notWhite);
+  width: max-content;
+  padding: 0 1rem;
+  color: var(--gray4);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+/* TODOS SECTIN  */

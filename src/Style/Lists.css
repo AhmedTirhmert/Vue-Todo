@@ -1,0 +1,33 @@
+/* LISTS SECTION */
+.listsSection {
+  padding: 0rem 1.5rem 1rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.2em;
+}
+.listsSection .listsItem {
+  background-color: var(--cardBg);
+  padding: 0.5em 1em;
+  font-family: var(--Yanone);
+  font-weight: 400;
+  font-size: 1.3em;
+  cursor: pointer;
+  filter: drop-shadow(0px 1px 12px rgba(0, 0, 0, 0.1));
+}
+.listsSection .listsItem:hover {
+  background-color: var(--borderPrimaryColor);
+}
+.viewMoreSection {
+  display: flex;
+  margin-top: 0.7em;
+  justify-content: flex-end;
+}
+.viewMoreSection .btn {
+  background-color: var(--secondaryColor);
+}
+.viewMoreSection .btn:hover {
+  /* background-color: white;
+  color: var(--primaryColor);
+  filter: drop-shadow(0px 1px 12px rgba(0, 0, 0, 0.2)); */
+  background-color: var(--primaryColor);
+}
