@@ -2,7 +2,7 @@
   <section class="dashboard">
     <h2 class="text--gray4 text-center mb-lg">Dashboard</h2>
     <lists :Lists="lists" />
-    <todos :Todos="todos" @TodoClicked="viewList" />
+    <todos :Todos="todos" @todoClicked="viewList" />
   </section>
 </template>
 
@@ -81,6 +81,7 @@ export default {
   },
   methods: {
     viewList(listId) {
+      console.log(listId);
       this.$router.push({ name: "List", params: { listId: listId } });
     },
   },

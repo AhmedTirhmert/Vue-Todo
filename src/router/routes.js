@@ -9,19 +9,30 @@ const routes = [
     path: "/todos",
     name: "Todos",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Todos.vue"),
+      import(/* webpackChunkName: "todos" */ "../views/Todos.vue"),
   },
   {
     path: "/list/:listId",
     name: "List",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/List.vue"),
+    component: () => import(/* webpackChunkName: "list" */ "../views/List.vue"),
   },
   {
     path: "/login",
     name: "Login",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Auth/Login"),
+      import(/* webpackChunkName: "login" */ "../views/Auth/Login"),
+  },
+  {
+    path: "/register",
+    name: "Login",
+    component: () =>
+      import(/* webpackChunkName: "register" */ "../views/Auth/Register"),
+  },
+  {
+    path: "/lists",
+    name: "Lists",
+    component: () =>
+      import(/* webpackChunkName: "register" */ "../views/Auth/Register"),
   },
 ];
 

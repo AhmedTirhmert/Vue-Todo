@@ -2,7 +2,7 @@
   <section class="list">
     <h1 class="text--center py-sm radius-sm text--italic mb-xl">
       <span class="">List Details : </span>
-      <span class="text--uppercase text--gray3">{{
+      <span class="text--uppercase text--secondaryColor">{{
         $route.params.listId
       }}</span>
     </h1>
@@ -52,44 +52,5 @@ export default {
 </script>
 
 <style>
-@import url("../Style/Variables.css");
-
-.list {
-  display: flex;
-  flex-direction: column;
-}
-.list > h1 {
-  background-color: var(--cardBg);
-  filter: drop-shadow(0px 1px 12px rgba(0, 0, 0, 0.07));
-}
-.list > h1 > span {
-  font-style: none;
-}
-.listBox {
-  position: relative;
-  margin-bottom: 3em;
-  /* border: 1px solid var(--primaryColor); */
-  background-color: var(--cardBg);
-  filter: drop-shadow(0px 1px 12px rgba(0, 0, 0, 0.07));
-}
-.listTitle {
-  position: relative;
-  left: 1em;
-  top: -1.3rem;
-  background: var(--cardBg);
-  max-width: max-content;
-  border: 1px solid var(--borderPrimaryColor);
-  font-weight: 500;
-}
-.listSection {
-  padding: 0rem 1.5rem 1rem 1.5rem;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.4em;
-}
-.listSection .listTodo {
-  /* border: 1px solid var(--primaryColor); */
-  background-color: var(--notWhite);
-  filter: drop-shadow(0px 0px 2px rgba(29, 53, 87, 0.2));
-}
+@import url("../Style/ListView.css");
 </style>

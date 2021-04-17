@@ -21,6 +21,9 @@
 .text--gray7 {
   color: var(--gray7);
 }
+.text--secondaryColor {
+  color: var(--secondaryColor);
+}
 /* --------------TEXT ALIGN-------------- */
 .text--center {
   text-align: center;
@@ -170,4 +173,14 @@
 }
 .btn-primary {
   background-color: var(--primaryColor);
+}
+/* ----------------------FLEX---------------------- */
+.flex {
+  display: flex;
+}
+.justify-space-between {
+  justify-content: space-between;
+}
+.flex-center {
+  justify-content: center;
 }

@@ -1,10 +1,25 @@
 <template>
-  <section class="loginForm mt-md radius-md px-md py-md">
-    <h1 class="text--center my-sm">Login</h1>
-    <input type="text" class="loginInput" placeholder="Email" />
-    <input type="text" class="loginInput" placeholder="Password" />
-    <button class="btn btn-primary radius-md py-md">Sign In</button>
-  </section>
+  <div class="authContainer">
+    <section class="authForm mt-md radius-md px-md py-md">
+      <h1 class="text--center mt-sm mb-xl">Sign In</h1>
+      <!-- <div class="authFields"> -->
+      <input
+        type="text"
+        class="authInput radius-lg mb-md"
+        placeholder="Email"
+      />
+      <input
+        type="password"
+        class="authInput radius-lg mb-md"
+        placeholder="Password"
+      />
+      <button class="btn radius-lg py-sm mb-md">Login</button>
+      <span class="text--center"
+        >New here!<router-link to="/register"> Sign up now</router-link></span
+      >
+      <!-- </div> -->
+    </section>
+  </div>
 </template>
 
 <script>

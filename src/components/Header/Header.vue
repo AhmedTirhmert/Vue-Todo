@@ -1,15 +1,8 @@
 <template>
-  <div class="header">
+  <div class="header" :class="isAuth ? '' : 'flex-center'">
     <!-- <div class="logo"></div> -->
     <router-link class="logo" to="/"> Todo-App </router-link>
-    <router-link v-if="isAuth" class="login" to="/">
-      <div class="btn">
-        <span>Log-In</span>
-
-        <i class="icon fa"></i>
-      </div>
-    </router-link>
-    <div v-else class="userDropdown">
+    <div v-if="isAuth" class="userDropdown">
       <button
         href="#"
         class="avatarBtn radius-lg mx-lg"
@@ -23,13 +16,19 @@
       </button>
       <ul v-if="isOpen" class="radius-sm">
         <li class="radius-sm">
-          <router-link class="py-md px-lg dd-link radius-sm" to="/ptofile">
-            Profile
+          <router-link
+            class="py-md px-lg dd-link radius-sm flex justify-space-between"
+            to="/ptofile"
+          >
+            <span>Profile</span><i class="text--gray3 fas fa-user"></i>
           </router-link>
         </li>
         <li class="radius-sm">
-          <router-link class="py-md px-lg dd-link radius-sm" to="/signOut">
-            SignOut
+          <router-link
+            class="py-md px-lg dd-link radius-sm flex justify-space-between"
+            to="/signOut"
+          >
+            <span>Sign out</span><i class="text--gray3 fas fa-sign-out-alt"></i>
           </router-link>
         </li>
       </ul>
@@ -47,7 +46,7 @@ export default {
   },
   data() {
     return {
-      isAuth: false,
+      isAuth: true,
     };
   },
   methods: {

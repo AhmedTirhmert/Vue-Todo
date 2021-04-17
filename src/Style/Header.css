@@ -15,8 +15,8 @@
 .avatarImg {
   width: 35px;
   height: 35px;
-  cursor: pointer;
 }
+
 .avatarBtn {
   width: 35px;
   height: 35px;
@@ -24,6 +24,19 @@
   border: none;
   position: relative;
   outline: none;
+  display: flex;
+  cursor: pointer;
+}
+.avatarBtn::after {
+  font-family: "Font Awesome 5 Free";
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  content: "\f0dd";
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 0.5em;
+  padding-bottom: 0.5em;
 }
 .userDropdown {
   position: relative;
@@ -33,8 +46,9 @@
 .userDropdown ul {
   position: absolute;
   background-color: var(--cardBg);
+  width: 10rem;
   right: 5%;
-  margin-top: -10px;
+  margin-top: 0px;
   list-style: none;
   z-index: 1;
   text-align: center;
@@ -59,7 +73,10 @@
   pointer-events: all;
 } */
 .userDropdown ul li a:hover {
-  background-color: var(--gray2);
+  background-color: var(--secondaryColor);
+  color: white;
+}
+.userDropdown ul li a:hover > i {
   color: white;
 }
 

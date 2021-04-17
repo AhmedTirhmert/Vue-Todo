@@ -25,11 +25,11 @@
 
 @media screen and (min-width: 769px) and (max-width: 1024px) {
   .mainLayout .mainContent {
-    padding: 1em 20vw;
+    padding: 1em 15vw;
   }
 }
 @media screen and (min-width: 1025px) {
   .mainLayout .mainContent {
-    padding: 1em 25vw;
+    padding: 1em 20vw;
   }
 }
