@@ -9,7 +9,7 @@
         @click="$emit('toggle-dd', isOpen)"
       >
         <img
-          src="../../assets/avatar.png"
+          src="../assets/avatar.png"
           alt="avatar"
           class="avatarImg radius-lg"
         />
@@ -18,7 +18,7 @@
         <li class="radius-sm">
           <router-link
             class="py-md px-lg dd-link radius-sm flex justify-space-between"
-            to="/ptofile"
+            to="/profile"
           >
             <span>Profile</span><i class="text--gray3 fas fa-user"></i>
           </router-link>
@@ -26,7 +26,7 @@
         <li class="radius-sm">
           <router-link
             class="py-md px-lg dd-link radius-sm flex justify-space-between"
-            to="/signOut"
+            to="/login"
           >
             <span>Sign out</span><i class="text--gray3 fas fa-sign-out-alt"></i>
           </router-link>

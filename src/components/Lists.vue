@@ -4,16 +4,11 @@
     <div v-if="!Lists" class="noListsSection">No Lists Yet</div>
     <section v-else class="listsSection" :class="Heading ? '' : 'py-lg px-md'">
       <div class="listContainner" v-for="(list, key) in Lists" :key="key">
-        <input
-          v-if="Edittable"
-          class="listInput"
-          type="text"
-          :value="list.title"
-        />
+        <input v-if="Edit" class="listInput" type="text" :value="list.title" />
         <div v-else class="listsItem radius-sm">
           {{ list.title }}
         </div>
-        <button class="btn radius-lg listAction color--danger">
+        <button v-if="Delete" class="btn radius-lg listAction color--danger">
           <i class="fas fa-trash"></i>
         </button>
       </div>
@@ -46,7 +41,11 @@ export default {
       type: Boolean,
       default: true,
     },
-    Edittable: {
+    Edit: {
+      type: Boolean,
+      default: false,
+    },
+    Delete: {
       type: Boolean,
       default: false,
     },

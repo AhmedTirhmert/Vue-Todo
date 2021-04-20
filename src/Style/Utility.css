@@ -137,6 +137,10 @@
   padding-right: 2em !important;
   padding-left: 2em !important;
 }
+.px-xl {
+  padding-right: 3em !important;
+  padding-left: 3em !important;
+}
 /* PY */
 .py-xl {
   padding-top: 3em !important;
@@ -174,6 +178,9 @@
 }
 .radius-lg {
   border-radius: 2rem;
+}
+.radius-xl {
+  border-radius: 10rem;
 }
 
 /* --------------*------BUTTONS--------------*------ */

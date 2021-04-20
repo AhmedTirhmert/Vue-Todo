@@ -33,6 +33,11 @@ const routes = [
     name: "Lists",
     component: () => import(/* webpackChunkName: "Lists" */ "../views/Lists"),
   },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: () => import(/* webpackChunkName: "Lists" */ "../views/Profile"),
+  },
 ];
 
 export default routes;

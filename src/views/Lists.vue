@@ -1,11 +1,12 @@
 <template>
-  <section class="containner">
+  <section class="">
     <h2 class="color--heading1 mb-md">Lists</h2>
     <lists
       :heading="false"
       :viewMore="false"
       :Lists="lists"
-      :Edittable="true"
+      :Edit="true"
+      :Delete="true"
     />
   </section>
 </template>

@@ -1,0 +1,92 @@
+.profile-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8em;
+  border: 1px solid var(--primaryColor);
+  /* background-color: white; */
+}
+
+.profile-btn {
+  font-family: var(--poppins);
+  font-size: 1em;
+  font-weight: 600;
+  background-color: var(--secondaryColor);
+  outline: none;
+}
+.profile-input-container {
+  display: flex;
+  justify-content: space-between;
+}
+.profile-input-container > label {
+  color: var(--primaryColor);
+  font-weight: 500;
+  font-family: var(--ubuntu);
+  font-size: 1rem;
+  padding-top: 1em;
+}
+
+.profile-input {
+  border: none;
+  padding: 1em 1em;
+  background-color: transparent;
+  border-radius: 2rem;
+  outline: none;
+  width: 60%;
+  border: 1px solid var(--borderPrimaryColor);
+  color: #adb5bd;
+  font-family: var(--ubuntu);
+  font-weight: 600;
+}
+.profile-input::placeholder {
+}
+.profile-input:focus {
+  background-color: white;
+  filter: drop-shadow(0px 1px 12px rgba(0, 0, 0, 0.1));
+  font-weight: 500;
+  color: black;
+
+  /* filter: ; */
+}
+.profile-file-input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+.profile-file-input + label {
+  display: inline-block;
+  padding: 1em 1em;
+  background-color: transparent;
+  color: #adb5bd;
+  font-family: var(--ubuntu);
+  font-weight: 600;
+  font-size: 0.9em;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+  border: 1px solid var(--borderPrimaryColor);
+  border-radius: 2rem;
+}
+.profile-file-input + label::after {
+  font-family: "Font Awesome 5 Free";
+  font-size: 1rem;
+  font-weight: 700;
+  content: "\f0c6";
+  margin-left: 6px;
+  transform: rotate(-45deg);
+}
+@media screen and (max-width: 500px) {
+  .profile-input-container {
+    flex-direction: column;
+    gap: 1em;
+  }
+  .profile-input {
+    width: 100%;
+  }
+  .profile-file-input + label {
+    width: 100%;
+  }
+}

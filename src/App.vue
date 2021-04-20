@@ -4,7 +4,10 @@
 <script>
 export default {
   components: {
-    MainLayout: () => import("./Layout/mainLayout"),
+    MainLayout: () => import("./Layout/Main"),
   },
 };
 </script>
+<style scoped>
+@import url("Style/index.css");
+</style>
