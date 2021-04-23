@@ -36,6 +36,9 @@
 .color--danger {
   color: var(--danger) !important;
 }
+.color--success {
+  color: var(--success) !important;
+}
 /* --------------TEXT ALIGN-------------- */
 .text--center {
   text-align: center;

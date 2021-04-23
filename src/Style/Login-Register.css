@@ -8,12 +8,17 @@
   background-color: white;
   display: grid;
   width: 100vw;
+  grid-template-columns: repeat();
 }
 .authForm button {
+  background-color: var(--secondaryColor);
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+}
+.authForm button span {
   font-family: var(--poppins);
   font-size: 1em;
   font-weight: 600;
-  background-color: var(--secondaryColor);
 }
 .authForm button:focus {
   outline: none;
@@ -44,6 +49,15 @@
   padding: 1em 1em;
   background-color: var(--input);
   font-family: var(--poppins);
+  width: 100%;
+}
+.input-error {
+  font-size: 0.8rem;
+  color: var(--danger);
+  padding-top: 0.2em;
+  padding-left: 1.5em;
+  font-weight: 500;
+  display: none;
 }
 .authFile {
   width: 0.1px;

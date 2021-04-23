@@ -176,5 +176,9 @@ export default {
   .modal-footer button {
     width: 100%;
   }
+  .modal-dialog {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
 }
 </style>

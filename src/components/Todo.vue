@@ -5,11 +5,10 @@
       Todo.created_at | carbonJs()
     }}</span>
   </div> -->
-  <div class="listTodoContainer">
-    <div class="listTodoContent">
-      <div class="listTodosItem radius-sm">
+  <div class="todo-containner">
+    <div class="todo-content">
+      <div class="todos-item radius-sm">
         <textarea
-          v-if="Editable"
           class="todoInput"
           rows="1"
           type="text"
@@ -17,23 +16,23 @@
           :ref="`autoGrowInput${todoKey}`"
           @input="inputing(`autoGrowInput${todoKey}`)"
         />
-        <p
+        <!-- <p
           class="todosItem radius-sm"
           v-else
           @click="$emit('TodoClicked', Todo.list_id)"
         >
           {{ Todo.content }}
-        </p>
-        <span class="listTodoDate px-sm text--end text--gray2 text--italic">{{
+        </p> -->
+        <span class="todo-date px-sm text--end text--gray2 text--italic">{{
           Todo.created_at | carbonJs()
         }}</span>
       </div>
     </div>
-    <div class="todoActions">
-      <button class="btn radius-lg listTodoDone" @click="markTodoDone(todoKey)">
+    <div class="todo-actions">
+      <button class="btn radius-lg todo-done" @click="markTodoDone(todoKey)">
         <i class="fa"></i>
       </button>
-      <button class="btn radius-lg listDeleteTodo" @click="deleteTodo(todoKey)">
+      <button class="btn radius-lg todo-delete" @click="deleteTodo(todoKey)">
         <i class="fa"></i>
       </button>
     </div>
@@ -47,10 +46,6 @@ export default {
   mixins: [filters],
   name: "Todo",
   props: {
-    Editable: {
-      type: Boolean,
-      default: false,
-    },
     Todo: {},
     todoKey: {
       type: String,
@@ -82,9 +77,7 @@ export default {
     },
   },
   mounted() {
-    if (this.Editable) {
-      this.inputing(`autoGrowInput${this.todoKey}`);
-    }
+    this.inputing(`autoGrowInput${this.todoKey}`);
   },
 };
 </script>

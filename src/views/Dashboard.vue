@@ -18,9 +18,11 @@ export default {
     return {
       lists: {
         list1: {
+          listId: "list1",
           title: "SPORT",
         },
         list2: {
+          listId: "list2",
           title: "STUDY",
         },
       },
