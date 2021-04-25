@@ -68,15 +68,28 @@
   display: block;
   color: black;
 }
+.userDropdown ul button {
+  border: none;
+  outline: none;
+  width: 100%;
+  background-color: transparent;
+}
 /* .userDropdown button:focus + ul {
   display: block;
   pointer-events: all;
 } */
 .userDropdown ul li a:hover {
-  background-color: var(--secondaryColor);
+  background-color: #6a8c70;
   color: white;
 }
 .userDropdown ul li a:hover > i {
+  color: white;
+}
+.userDropdown ul li button:hover {
+  background-color: #6a8c70;
+  color: white;
+}
+.userDropdown ul li button:hover > i {
   color: white;
 }
 

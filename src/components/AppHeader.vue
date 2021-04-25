@@ -24,12 +24,12 @@
           </router-link>
         </li>
         <li class="radius-sm">
-          <router-link
+          <button
+            @click="logoutUser"
             class="py-md px-lg dd-link radius-sm flex justify-space-between"
-            to="/login"
           >
             <span>Sign out</span><i class="text--gray3 fas fa-sign-out-alt"></i>
-          </router-link>
+          </button>
         </li>
       </ul>
     </div>
@@ -37,22 +37,25 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
-  name: "Header",
+  name: "AppHeader",
   props: {
     isOpen: {
       value: false,
     },
   },
   data() {
-    return {
-      isAuth: true,
-    };
+    return {};
   },
   methods: {
+    ...mapActions("AuthStore", ["logoutUser"]),
     Logout() {
       console.log("Logging Out");
     },
+  },
+  computed: {
+    ...mapGetters("AuthStore", ["isAuth"]),
   },
 };
 </script>

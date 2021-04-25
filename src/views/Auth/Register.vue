@@ -1,26 +1,26 @@
 <template>
   <div class="authContainer">
     <section class="authForm mt-md radius-md px-md py-md">
-      <h1 class="text--center mt-sm mb-lg">Sign Up</h1>
-      <!-- <div class="authFields"> -->
+      <h1 class="text--center mt-sm mb-md">Sign Up</h1>
+      <app-alert v-if="registerError" :message="registerError" type="danger" />
       <div class="mb-md">
         <input
           type="text"
           class="authInput radius-lg"
           placeholder="Full Name"
           @input="nameInput()"
-          v-model="fullName"
+          v-model="form.fullName"
         />
         <p ref="fullNameError" class="input-error">Input error</p>
       </div>
 
       <div class="mb-md">
         <input
-          type="text"
+          type="email"
           class="authInput radius-lg"
           placeholder="Email"
           @input="emailInput()"
-          v-model="email"
+          v-model="form.email"
         />
         <p ref="emailError" class="input-error">Input error</p>
       </div>
@@ -45,7 +45,7 @@
           type="password"
           class="authInput radius-lg"
           placeholder="Password"
-          v-model="password"
+          v-model="form.password"
           @input="passwordInput()"
         />
         <p ref="passwordError" class="input-error">Input error</p>
@@ -55,7 +55,7 @@
           type="password"
           class="authInput radius-lg"
           placeholder="Password Confirmation"
-          v-model="passwordConfirmation"
+          v-model="form.passwordConfirmation"
           @input="passwordConfInput()"
         />
         <p ref="passwordConfirmationError" class="input-error">Input error</p>
@@ -74,20 +74,23 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
+  components: { AppAlert: () => import("../../components/AppAlert.vue") },
   name: "Register",
   data() {
     return {
-      email: null,
-      fullName: null,
-      password: null,
-      picture: null,
-      passwordConfirmation: null,
+      form: {
+        email: null,
+        fullName: null,
+        password: null,
+        picture: null,
+        passwordConfirmation: null,
+      },
       Validation: {
         email: false,
         fullName: false,
-        picture: false,
+        picture: null,
         password: false,
         passwordConfirmation: false,
       },
@@ -95,9 +98,12 @@ export default {
   },
   methods: {
     ...mapActions("AuthStore", ["registerUser"]),
+    ...mapMutations("AuthStore", ["setRegisterError"]),
     nameInput() {
       let fullNameError = this.$refs.fullNameError;
-      if (/^[A-Za-z]*( [A-Za-z]([-']?[a-z]{1,2})*)+$/.test(this.fullName)) {
+      if (
+        /^[A-Za-z]*( [A-Za-z]([-']?[a-z]{1,2})*)+$/.test(this.form.fullName)
+      ) {
         this.Validation.fullName = true;
         fullNameError.style.display = "none";
       } else {
@@ -112,11 +118,14 @@ export default {
       if (picture.size / 1048576 < 10) {
         pictureLabel.innerHTML = picture.name;
         pictureError.style.display = "none";
+        this.form.picture = picture;
         this.Validation.picture = true;
       } else {
         pictureLabel.innerHTML = "Chose a picture (Max 10Mb)";
         pictureError.innerHTML = "Picture size over 10Mb!";
         pictureError.style.display = "block";
+        this.Validation.picture = false;
+
         picture = null;
       }
       // console.log(picture);
@@ -125,7 +134,9 @@ export default {
     },
     emailInput() {
       let emailError = this.$refs.emailError;
-      if (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,4}$/.test(this.email)) {
+      if (
+        /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,4}$/.test(this.form.email)
+      ) {
         emailError.style.display = "none";
         this.Validation.email = true;
       } else {
@@ -138,7 +149,7 @@ export default {
 
       if (
         /^(?=.*[0-9])(?=.*[a-z0-9])(?=.*[A-Z0-9])([a-zA-Z0-9]{6})$/.test(
-          this.password
+          this.form.password
         )
       ) {
         passwordError.style.display = "none";
@@ -151,7 +162,7 @@ export default {
     },
     passwordConfInput() {
       let passwordConfError = this.$refs.passwordConfirmationError;
-      if (this.password === this.passwordConfirmation) {
+      if (this.form.password === this.form.passwordConfirmation) {
         passwordConfError.style.display = "none";
         this.Validation.passwordConfirmation = true;
       } else {
@@ -161,22 +172,36 @@ export default {
     },
     Register() {
       if (this.form_valid) {
-        this.registerUser({ email: this.email, password: this.password });
+        this.registerUser(this.form);
       }
     },
   },
   computed: {
+    ...mapGetters("AuthStore", ["registerError"]),
     form_valid: function () {
       if (
         this.Validation.email &&
         this.Validation.fullName &&
-        this.Validation.picture &&
+        this.Validation.picture != false &&
         this.Validation.password &&
         this.Validation.passwordConfirmation
       ) {
+        console.log("form valid");
         return true;
       }
+      console.log("form non valid");
+
       return false;
+    },
+  },
+  watch: {
+    registerError(val) {
+      if (val) {
+        setTimeout(() => {
+          this.setRegisterError(null);
+        }, 3000);
+        clearTimeout();
+      }
     },
   },
 };
