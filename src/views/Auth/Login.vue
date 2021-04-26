@@ -90,5 +90,5 @@ export default {
 </script>
 
 <style>
-@import url("../../style/Login-Register.css");
+@import url("../../assets/css/Login-Register.css");
 </style>

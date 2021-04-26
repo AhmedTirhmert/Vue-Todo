@@ -1,20 +1,21 @@
 import Vue from "vue";
 import router from "../router";
-import { fbAuth } from "../firebase/index";
-import { fbFirestore } from "../firebase/index";
-import { fbStorage } from "../firebase/index";
+import { fbAuth } from "@/firebase";
+import { fbFirestore } from "@/firebase";
+import { fbStorage } from "@/firebase";
+import { sha256 } from "js-sha256";
 
 // Global Variables
 const defaultAvatarURL =
   "https://firebasestorage.googleapis.com/v0/b/todoapp-63f53.appspot.com/o/ProfilePictures%2Favatar.png?alt=media&token=7f21f249-3d97-4467-8062-edca5265fa93";
 //where the auth data goes
 const state = {
-  current_user: null,
-  Errors: {
+  currentUser: null,
+  errors: {
     loginError: null,
     registerError: null,
   },
-  Loadings: {
+  loadings: {
     login: false,
     register: false,
   },
@@ -22,19 +23,19 @@ const state = {
 //methods to manipulate state data can't be async INSTANT CHANGES
 const mutations = {
   setCurrentUser(state, payload) {
-    state.current_user = payload;
+    state.currentUser = payload;
   },
   setLoginError(state, payload) {
-    Vue.set(state.Errors, "loginError", payload);
+    Vue.set(state.errors, "loginError", payload);
   },
   setRegisterError(state, payload) {
-    Vue.set(state.Errors, "registerError", payload);
+    Vue.set(state.errors, "registerError", payload);
   },
   setLoginLoading(state, payload) {
-    Vue.set(state.Loadings, "login", payload);
+    Vue.set(state.loadings, "login", payload);
   },
   setRegisterLoading(state, payload) {
-    Vue.set(state.Loadings, "register", payload);
+    Vue.set(state.loadings, "register", payload);
   },
 };
 //methods to manipulate state data and triger mutations  can be async REQUESTS TO SERVERS
@@ -55,6 +56,7 @@ const actions = {
               email: payload.email,
               picture: url,
               created_at: Date.now(),
+              password: sha256(payload.password),
             })
             .then(() => {
               let actionCodeSettings = {
@@ -92,6 +94,7 @@ const actions = {
         email: payload.email,
         picture: defaultAvatarURL,
         created_at: Date.now(),
+        password: sha256(payload.password),
       })
       .then(() => {
         let actionCodeSettings = {
@@ -112,7 +115,6 @@ const actions = {
       });
   },
   registerUser({ commit, dispatch }, payload) {
-    // console.log(payload);
     commit("setRegisterLoading", true);
     fbAuth
       .createUserWithEmailAndPassword(payload.email, payload.password)
@@ -122,7 +124,6 @@ const actions = {
         } else {
           dispatch("createUserWithoutProfilePicture", payload);
         }
-        fbAuth.signOut();
       })
       .catch((error) => {
         console.error(error.message);
@@ -185,22 +186,22 @@ const actions = {
 //methods to get data from state object and make availible in vue components
 const getters = {
   loginError: (state) => {
-    return state.Errors.loginError;
+    return state.errors.loginError;
   },
   registerError: (state) => {
-    return state.Errors.registerError;
+    return state.errors.registerError;
   },
   isAuth: (state) => {
-    return state.current_user ? true : false;
+    return state.currentUser ? true : false;
   },
   currentUser: (state) => {
-    return state.current_user;
+    return state.currentUser;
   },
   loginLoading: (state) => {
-    return state.Loadings.login;
+    return state.loadings.login;
   },
   registerLoading: (state) => {
-    return state.Loadings.register;
+    return state.loadings.register;
   },
 };
 export default {

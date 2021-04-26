@@ -48,5 +48,5 @@ export default {
 </script>
 
 <style>
-@import url("../style/Views/Lists.css");
+@import url("../assets/css/Views/Lists.css");
 </style>

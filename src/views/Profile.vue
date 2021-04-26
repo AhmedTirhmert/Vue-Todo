@@ -4,21 +4,21 @@
     <div class="profile-section radius-sm py-lg px-lg">
       <div class="profile-input-container">
         <label>Full Name</label>
-        <input type="text" class="profile-input" value="Ahmed Tirhmert" />
-      </div>
-      <div class="profile-input-container">
-        <label>Email</label>
         <input
           type="text"
           class="profile-input"
-          value="Ahmedtirhmert@gmail.com"
+          :value="currentUser.fullName"
         />
+      </div>
+      <div class="profile-input-container">
+        <label>Email</label>
+        <input type="text" class="profile-input" :value="currentUser.email" />
       </div>
 
       <div class="profile-input-container">
         <label>Picture</label>
         <input type="file" class="profile-file-input" id="profile-picture" />
-        <label for="profile-picture">Profile Picture </label>
+        <label for="profile-picture">Select new profile picture </label>
       </div>
       <div class="profile-input-container">
         <label>Password</label>
@@ -26,6 +26,10 @@
       </div>
       <div class="profile-input-container">
         <label>New Password</label>
+        <input type="password" class="profile-input" />
+      </div>
+      <div class="profile-input-container">
+        <label>Confirm Password</label>
         <input type="password" class="profile-input" />
       </div>
       <button
@@ -60,6 +64,7 @@
 
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "Profile",
   components: {
@@ -77,11 +82,14 @@ export default {
     };
   },
   mounted() {},
+  computed: {
+    ...mapGetters("AuthStore", ["currentUser"]),
+  },
 };
 </script>
 
 
 <style scoped>
-@import url("../style/Profile.css");
+@import url("/assets/css/Profile.css");
 </style>
 
