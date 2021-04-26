@@ -61,7 +61,8 @@
         <p ref="passwordConfirmationError" class="input-error">Input error</p>
       </div>
       <button class="btn radius-lg mb-md" @click="Register()">
-        <span>Create Account</span>
+        <span v-if="!registerLoading">Create Account</span>
+        <i v-else class="fas fa-spinner fa-pulse"></i>
       </button>
       <span class="text--center"
         >Already have an account?<router-link to="/login">
@@ -107,7 +108,8 @@ export default {
         this.Validation.fullName = true;
         fullNameError.style.display = "none";
       } else {
-        fullNameError.innerHTML = "Full name must be 5 to 16 characters";
+        fullNameError.innerHTML =
+          "Full name must consist of First Name and Last Name";
         fullNameError.style.display = "block";
       }
     },
@@ -148,7 +150,7 @@ export default {
       let passwordError = this.$refs.passwordError;
 
       if (
-        /^(?=.*[0-9])(?=.*[a-z0-9])(?=.*[A-Z0-9])([a-zA-Z0-9]{6})$/.test(
+        /^(?=.*[0-9])(?=.*[a-z0-9])(?=.*[A-Z0-9])([a-zA-Z0-9]{6,})$/.test(
           this.form.password
         )
       ) {
@@ -177,7 +179,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("AuthStore", ["registerError"]),
+    ...mapGetters("AuthStore", ["registerError", "registerLoading"]),
     form_valid: function () {
       if (
         this.Validation.email &&
@@ -186,10 +188,8 @@ export default {
         this.Validation.password &&
         this.Validation.passwordConfirmation
       ) {
-        console.log("form valid");
         return true;
       }
-      console.log("form non valid");
 
       return false;
     },
@@ -208,5 +208,5 @@ export default {
 </script>
 
 <style>
-@import url("../../Style/Login-Register.css");
+@import url("../../style/Login-Register.css");
 </style>

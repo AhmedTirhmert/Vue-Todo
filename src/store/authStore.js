@@ -1,15 +1,22 @@
 import Vue from "vue";
 import router from "../router";
-// import { v1 as UID } from "uuid";
-import { fb_auth } from "../firebase/index";
-import { fb_firestore } from "../firebase/index";
+import { fbAuth } from "../firebase/index";
+import { fbStore } from "../firebase/index";
+import { fbStorage } from "../firebase/index";
+
 // Global Variables
+const defaultAvatarURL =
+  "https://firebasestorage.googleapis.com/v0/b/todoapp-63f53.appspot.com/o/ProfilePictures%2Favatar.png?alt=media&token=7f21f249-3d97-4467-8062-edca5265fa93";
 //where the auth data goes
 const state = {
   current_user: null,
   Errors: {
     loginError: null,
     registerError: null,
+  },
+  Loadings: {
+    login: false,
+    register: false,
   },
 };
 //methods to manipulate state data can't be async INSTANT CHANGES
@@ -23,76 +30,155 @@ const mutations = {
   setRegisterError(state, payload) {
     Vue.set(state.Errors, "registerError", payload);
   },
+  setLoginLoading(state, payload) {
+    Vue.set(state.Loadings, "login", payload);
+  },
+  setRegisterLoading(state, payload) {
+    Vue.set(state.Loadings, "register", payload);
+  },
 };
 //methods to manipulate state data and triger mutations  can be async REQUESTS TO SERVERS
 const actions = {
-  registerUser({ commit }, payload) {
-    console.log(payload);
-    fb_auth
-      .createUserWithEmailAndPassword(payload.email, payload.password)
-      .then(() => {
-        let User = fb_auth.currentUser;
-        fb_firestore
-          .collection("Users")
-          .doc(User.uid)
-          .set({
-            user_id: User.uid,
-            fullName: payload.fullName,
-            email: payload.email,
-            picture: payload.picture ? payload.picture.name : "",
-            created_at: Date.now(),
-          })
-          .then(() => {
-            let actionCodeSettings = {
-              url: `${process.env.VUE_APP_HOST_NAME}/login/?email=${User.email}`,
-            };
+  createUserWithProfilePicture({ commit }, payload) {
+    let User = fbAuth.currentUser;
+    fbStorage
+      .ref(`ProfilePictures/${User.uid}`)
+      .put(payload.picture)
+      .then((res) => {
+        res.ref.getDownloadURL().then((url) => {
+          fbStore
+            .collection("Users")
+            .doc(User.uid)
+            .set({
+              user_id: User.uid,
+              fullName: payload.fullName,
+              email: payload.email,
+              picture: url,
+              created_at: Date.now(),
+            })
+            .then(() => {
+              let actionCodeSettings = {
+                url: `${process.env.VUE_APP_HOST_NAME}/login/?email=${User.email}`,
+              };
 
-            User.sendEmailVerification(actionCodeSettings);
-            commit(
-              "setRegisterError",
-              "Verification Email was sent to your inbox "
-            );
-          })
-          .catch((error) => {
-            console.error("Error writing document: ", error);
-          });
+              User.sendEmailVerification(actionCodeSettings);
+              commit("setRegisterLoading", false);
+              commit(
+                "setRegisterError",
+                "Verification Email was sent to your inbox "
+              );
+            })
+            .catch((error) => {
+              console.error(error.message);
+              commit("setRegisterError", "Something went Wrong :(");
+              commit("setRegisterLoading", false);
+            });
+        });
       })
       .catch((error) => {
+        console.error(error.message);
+        commit("setRegisterError", "Something went Wrong :(");
+        commit("setRegisterLoading", false);
+      });
+  },
+  createUserWithoutProfilePicture({ commit }, payload) {
+    let User = fbAuth.currentUser;
+    fbStore
+      .collection("Users")
+      .doc(User.uid)
+      .set({
+        user_id: User.uid,
+        fullName: payload.fullName,
+        email: payload.email,
+        picture: defaultAvatarURL,
+        created_at: Date.now(),
+      })
+      .then(() => {
+        let actionCodeSettings = {
+          url: `${process.env.VUE_APP_HOST_NAME}/login/?email=${User.email}`,
+        };
+
+        User.sendEmailVerification(actionCodeSettings);
+        commit(
+          "setRegisterError",
+          "Verification Email was sent to your inbox "
+        );
+        commit("setRegisterLoading", false);
+      })
+      .catch((error) => {
+        console.error(error.message);
+        commit("setRegisterError", "Something went Wrong :(");
+        commit("setRegisterLoading", false);
+      });
+  },
+  registerUser({ commit, dispatch }, payload) {
+    // console.log(payload);
+    commit("setRegisterLoading", true);
+    fbAuth
+      .createUserWithEmailAndPassword(payload.email, payload.password)
+      .then(() => {
+        if (payload.picture) {
+          dispatch("createUserWithProfilePicture", payload);
+        } else {
+          dispatch("createUserWithoutProfilePicture", payload);
+        }
+        fbAuth.signOut();
+      })
+      .catch((error) => {
+        console.error(error.message);
         commit("setRegisterError", error.message);
+        commit("setRegisterLoading", false);
       });
   },
   loginUser({ commit }, payload) {
-    fb_auth
+    commit("setLoginLoading", true);
+    fbAuth
       .signInWithEmailAndPassword(payload.email, payload.password)
       .then(() => {
-        let User = fb_auth.currentUser;
-        console.log(User);
+        let User = fbAuth.currentUser;
+        // console.log(User);
         if (User.emailVerified) {
           commit("setCurrentUser", User);
           router.push({ name: "Dashboard" });
+          commit("setLoginLoading", false);
         } else {
           commit("setLoginError", "You must verify your Email to Log In");
+          commit("setLoginLoading", false);
+          fbAuth.signOut();
         }
       })
       .catch((error) => {
         commit("setLoginError", "Incorrect Email or Password ");
-        console.log(error.message);
+        console.error(error.message);
+        commit("setLoginLoading", false);
       });
   },
   logoutUser({ commit }) {
-    fb_auth.signOut();
+    fbAuth.signOut();
     commit("setCurrentUser", null);
     router.push({ name: "Login" });
   },
   HandleAuthStateChange({ commit }) {
-    fb_auth.onAuthStateChanged((User) => {
-      if (User && User.emailVerified) {
-        // console.log("Current User is => ", User);
-        commit("setCurrentUser", User);
-      } else {
-        // console.log("No Current User");
-        commit("setCurrentUser", null);
-      }
+    return new Promise((resolve, reject) => {
+      fbAuth.onAuthStateChanged((User) => {
+        if (User && User.emailVerified) {
+          fbStore
+            .collection("Users")
+            .doc(User.uid)
+            .get()
+            .then((res) => {
+              commit("setCurrentUser", res.data());
+              resolve(res.data());
+            })
+            .catch((error) => {
+              console.log(error);
+              reject(error);
+            });
+        } else {
+          commit("setCurrentUser", null);
+          resolve("no User");
+        }
+      });
     });
   },
 };
@@ -106,6 +192,15 @@ const getters = {
   },
   isAuth: (state) => {
     return state.current_user ? true : false;
+  },
+  currentUser: (state) => {
+    return state.current_user;
+  },
+  loginLoading: (state) => {
+    return state.Loadings.login;
+  },
+  registerLoading: (state) => {
+    return state.Loadings.register;
   },
 };
 export default {

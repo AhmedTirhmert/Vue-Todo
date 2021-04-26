@@ -108,5 +108,5 @@ export default {
 </script>
 
 <style>
-@import url("../Style/listsComponent.css");
+@import url("../style/listsComponent.css");
 </style>

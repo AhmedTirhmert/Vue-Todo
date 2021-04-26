@@ -52,5 +52,5 @@ export default {
 </script>
 
 <style>
-@import url("../Style/ListView.css");
+@import url("../style/ListView.css");
 </style>

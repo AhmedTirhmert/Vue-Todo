@@ -82,6 +82,6 @@ export default {
 
 
 <style scoped>
-@import url("../Style/Profile.css");
+@import url("../style/Profile.css");
 </style>
 

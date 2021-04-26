@@ -9,7 +9,7 @@
         @click="$emit('toggle-dd', isOpen)"
       >
         <img
-          src="../assets/avatar.png"
+          :src="currentUser.picture"
           alt="avatar"
           class="avatarImg radius-lg"
         />
@@ -55,7 +55,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("AuthStore", ["isAuth"]),
+    ...mapGetters("AuthStore", ["isAuth", "currentUser"]),
   },
 };
 </script>

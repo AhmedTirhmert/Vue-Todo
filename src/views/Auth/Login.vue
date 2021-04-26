@@ -24,7 +24,8 @@
       </div>
 
       <button class="btn radius-lg mb-md" @click="Login()">
-        <span>Log In</span>
+        <span v-if="!loginLoading">Log In</span>
+        <i v-else class="fas fa-spinner fa-pulse"></i>
       </button>
       <span class="text--center"
         >New here!<router-link to="/register"> Sign up now</router-link></span
@@ -73,7 +74,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("AuthStore", ["loginError"]),
+    ...mapGetters("AuthStore", ["loginError", "loginLoading"]),
   },
   watch: {
     loginError(val) {
@@ -89,5 +90,5 @@ export default {
 </script>
 
 <style>
-@import url("../../Style/Login-Register.css");
+@import url("../../style/Login-Register.css");
 </style>
