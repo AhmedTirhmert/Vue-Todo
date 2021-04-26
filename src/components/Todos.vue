@@ -18,7 +18,7 @@
 export default {
   name: "Todos",
   components: {
-    todo: () => import("../components/Todo"),
+    todo: () => import("@/components/Todo"),
   },
   props: {
     Todos: {

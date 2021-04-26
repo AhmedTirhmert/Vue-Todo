@@ -10,7 +10,7 @@
 <script>
 export default {
   components: {
-    AppHeader: () => import("../components/AppHeader"),
+    AppHeader: () => import("@/components/AppHeader"),
   },
   data() {
     return {

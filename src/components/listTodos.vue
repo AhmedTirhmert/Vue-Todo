@@ -20,7 +20,7 @@
 export default {
   name: "listTodos",
   components: {
-    Todo: () => import("../components/Todo"),
+    Todo: () => import("@/components/Todo"),
   },
   props: {
     listTitle: {

@@ -10,8 +10,8 @@
 <script>
 export default {
   components: {
-    Todos: () => import("../components/Todos"),
-    Lists: () => import("../components/Lists"),
+    Todos: () => import("@/components/Todos"),
+    Lists: () => import("@/components/Lists"),
   },
   name: "Dashboard",
   data: function () {

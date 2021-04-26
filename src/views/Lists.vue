@@ -8,7 +8,7 @@
 <script>
 export default {
   components: {
-    Lists: () => import("../components/Lists"),
+    Lists: () => import("@/components/Lists"),
   },
   data() {
     return {

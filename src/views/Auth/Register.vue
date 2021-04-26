@@ -77,7 +77,7 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
-  components: { AppAlert: () => import("../../components/AppAlert.vue") },
+  components: { AppAlert: () => import("@/components/AppAlert.vue") },
   name: "Register",
   data() {
     return {

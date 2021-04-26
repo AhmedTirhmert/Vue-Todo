@@ -6,7 +6,7 @@ const routes = [
       requireGuest: true,
     },
     component: () =>
-      import(/* webpackChunkName: "login" */ "../views/Auth/Login"),
+      import(/* webpackChunkName: "login" */ "@/views/Auth/Login"),
   },
   {
     path: "/register",
@@ -15,7 +15,7 @@ const routes = [
       requireGuest: true,
     },
     component: () =>
-      import(/* webpackChunkName: "register" */ "../views/Auth/Register"),
+      import(/* webpackChunkName: "register" */ "@/views/Auth/Register"),
   },
   {
     path: "/",
@@ -24,7 +24,7 @@ const routes = [
       requireAuth: true,
     },
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Dashboard.vue"),
+      import(/* webpackChunkName: "about" */ "@/views/Dashboard.vue"),
   },
   {
     path: "/todos",
@@ -33,7 +33,7 @@ const routes = [
       requireAuth: true,
     },
     component: () =>
-      import(/* webpackChunkName: "todos" */ "../views/Todos.vue"),
+      import(/* webpackChunkName: "todos" */ "@/views/Todos.vue"),
   },
   {
     path: "/list/:listId",
@@ -41,7 +41,7 @@ const routes = [
     meta: {
       requireAuth: true,
     },
-    component: () => import(/* webpackChunkName: "list" */ "../views/List.vue"),
+    component: () => import(/* webpackChunkName: "list" */ "@/views/List.vue"),
   },
   {
     path: "/lists",
@@ -49,7 +49,7 @@ const routes = [
     meta: {
       requireAuth: true,
     },
-    component: () => import(/* webpackChunkName: "Lists" */ "../views/Lists"),
+    component: () => import(/* webpackChunkName: "Lists" */ "@/views/Lists"),
   },
   {
     path: "/profile",
@@ -57,7 +57,7 @@ const routes = [
     meta: {
       requireAuth: true,
     },
-    component: () => import(/* webpackChunkName: "Lists" */ "../views/Profile"),
+    component: () => import(/* webpackChunkName: "Lists" */ "@/views/Profile"),
   },
 ];
 

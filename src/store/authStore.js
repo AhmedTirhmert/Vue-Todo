@@ -1,7 +1,7 @@
 import Vue from "vue";
 import router from "../router";
 import { fbAuth } from "../firebase/index";
-import { fbStore } from "../firebase/index";
+import { fbFirestore } from "../firebase/index";
 import { fbStorage } from "../firebase/index";
 
 // Global Variables
@@ -46,7 +46,7 @@ const actions = {
       .put(payload.picture)
       .then((res) => {
         res.ref.getDownloadURL().then((url) => {
-          fbStore
+          fbFirestore
             .collection("Users")
             .doc(User.uid)
             .set({
@@ -83,7 +83,7 @@ const actions = {
   },
   createUserWithoutProfilePicture({ commit }, payload) {
     let User = fbAuth.currentUser;
-    fbStore
+    fbFirestore
       .collection("Users")
       .doc(User.uid)
       .set({
@@ -162,7 +162,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       fbAuth.onAuthStateChanged((User) => {
         if (User && User.emailVerified) {
-          fbStore
+          fbFirestore
             .collection("Users")
             .doc(User.uid)
             .get()

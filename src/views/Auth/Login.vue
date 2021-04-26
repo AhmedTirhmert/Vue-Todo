@@ -40,7 +40,7 @@ import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
   name: "Login",
   components: {
-    AppAlert: () => import("../../components/AppAlert"),
+    AppAlert: () => import("@/components/AppAlert"),
   },
   data() {
     return {

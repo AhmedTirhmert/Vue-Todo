@@ -63,7 +63,7 @@
 export default {
   name: "Profile",
   components: {
-    deleteModal: () => import("../components/deleteModal"),
+    deleteModal: () => import("@/components/deleteModal"),
   },
   methods: {
     openUp() {

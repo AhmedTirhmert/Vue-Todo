@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import filters from "../Mixins/Filters";
+import filters from "@/mixins/Filters";
 
 export default {
   mixins: [filters],
