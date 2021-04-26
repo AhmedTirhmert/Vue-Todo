@@ -55,8 +55,8 @@ export default {
     }
   },
   methods: {
-    ...mapMutations("AuthStore", ["setLoginError"]),
-    ...mapActions("AuthStore", ["loginUser"]),
+    ...mapMutations("auth", ["setLoginError"]),
+    ...mapActions("auth", ["loginUser"]),
     emailInput() {
       let emailError = this.$refs.emailError;
       if (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,4}$/.test(this.Email)) {
@@ -74,7 +74,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("AuthStore", ["loginError", "loginLoading"]),
+    ...mapGetters("auth", ["loginError", "loginLoading"]),
   },
   watch: {
     loginError(val) {

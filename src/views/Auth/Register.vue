@@ -98,8 +98,8 @@ export default {
     };
   },
   methods: {
-    ...mapActions("AuthStore", ["registerUser"]),
-    ...mapMutations("AuthStore", ["setRegisterError"]),
+    ...mapActions("auth", ["registerUser"]),
+    ...mapMutations("auth", ["setRegisterError"]),
     nameInput() {
       let fullNameError = this.$refs.fullNameError;
       if (
@@ -179,7 +179,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("AuthStore", ["registerError", "registerLoading"]),
+    ...mapGetters("auth", ["registerError", "registerLoading"]),
     form_valid: function () {
       if (
         this.Validation.email &&

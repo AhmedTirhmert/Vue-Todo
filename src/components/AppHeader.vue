@@ -49,13 +49,13 @@ export default {
     return {};
   },
   methods: {
-    ...mapActions("AuthStore", ["logoutUser"]),
+    ...mapActions("auth", ["logoutUser"]),
     Logout() {
       console.log("Logging Out");
     },
   },
   computed: {
-    ...mapGetters("AuthStore", ["isAuth", "currentUser"]),
+    ...mapGetters("auth", ["isAuth", "currentUser"]),
   },
 };
 </script>

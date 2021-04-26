@@ -6,7 +6,7 @@ const routes = [
       requireGuest: true,
     },
     component: () =>
-      import(/* webpackChunkName: "login" */ "@/views/Auth/Login"),
+      import(/* webpackChunkName: "login" */ "@/views/auth/Login"),
   },
   {
     path: "/register",
@@ -15,7 +15,7 @@ const routes = [
       requireGuest: true,
     },
     component: () =>
-      import(/* webpackChunkName: "register" */ "@/views/Auth/Register"),
+      import(/* webpackChunkName: "register" */ "@/views/auth/Register"),
   },
   {
     path: "/",

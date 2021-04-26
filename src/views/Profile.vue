@@ -32,15 +32,9 @@
         <label>Confirm Password</label>
         <input type="password" class="profile-input" />
       </div>
-      <button
-        class="btn profile-btn py-sm radius-lg"
-        ref="btn"
-        @click="$refs.modalName.openModal()"
-      >
-        Save Changes
-      </button>
+      <button class="btn profile-btn py-sm radius-lg">Save Changes</button>
     </div>
-    <delete-modal ref="modalName">
+    <!-- <delete-modal ref="modalName">
       <template v-slot:header>
         <h1>Delete Note</h1>
       </template>
@@ -58,7 +52,7 @@
           Yes
         </button>
       </template>
-    </delete-modal>
+    </delete-modal> -->
   </section>
 </template>
 
@@ -68,7 +62,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "Profile",
   components: {
-    deleteModal: () => import("@/components/deleteModal"),
+    // DeleteModal: () => import("@/components/DeleteModal"),
   },
   methods: {
     openUp() {
@@ -78,18 +72,23 @@ export default {
   filters: {},
   data: function () {
     return {
-      showModal: false,
+      profileInfos: {
+        fullName: "",
+        email: "",
+        fullName: "",
+        fullName: "",
+      },
     };
   },
   mounted() {},
   computed: {
-    ...mapGetters("AuthStore", ["currentUser"]),
+    ...mapGetters("auth", ["currentUser"]),
   },
 };
 </script>
 
 
 <style scoped>
-@import url("/assets/css/Profile.css");
+@import url("../assets/css/Profile.css");
 </style>
 

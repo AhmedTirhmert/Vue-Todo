@@ -14,7 +14,7 @@
 export default {
   name: "ListView",
   components: {
-    listTodos: () => import("@/components/listTodos"),
+    listTodos: () => import("@/components/ListTodos"),
   },
   data() {
     return {

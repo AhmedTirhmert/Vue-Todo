@@ -5,7 +5,7 @@ import router from "./router";
 import store from "./store";
 Vue.config.productionTip = false;
 let app;
-store.dispatch("AuthStore/HandleAuthStateChange").then(() => {
+store.dispatch("auth/HandleAuthStateChange").then(() => {
   if (!app) {
     app = new Vue({
       router,

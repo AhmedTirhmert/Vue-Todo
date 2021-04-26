@@ -12,9 +12,9 @@ const router = new VueRouter({
 });
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requireAuth)) {
-    // console.log("is Auth Rest => ", store.getters["AuthStore/isAuth"]);
+    // console.log("is Auth Rest => ", store.getters["auth/isAuth"]);
 
-    if (store.getters["AuthStore/isAuth"]) {
+    if (store.getters["auth/isAuth"]) {
       next();
     } else {
       next({
@@ -24,9 +24,9 @@ router.beforeEach((to, from, next) => {
   } else if (to.matched.some((record) => record.meta.requireGuest)) {
     // console.log(
     // "is Auth Login/Register => ",
-    // store.getters["AuthStore/isAuth"]
+    // store.getters["auth/isAuth"]
     // );
-    if (!store.getters["AuthStore/isAuth"]) {
+    if (!store.getters["auth/isAuth"]) {
       next();
     } else {
       next({
