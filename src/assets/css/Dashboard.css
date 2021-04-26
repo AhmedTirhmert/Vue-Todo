@@ -1,6 +1,6 @@
 @import url("Variables.css");
 @import url("Todos.css");
-@import url("listsComponent.css");
+@import url("lists-component.css");
 
 .dashboard {
   display: flex;

@@ -208,5 +208,5 @@ export default {
 </script>
 
 <style>
-@import url("../../assets/css/Login-Register.css");
+@import url("../../assets/css/login-register.css");
 </style>

@@ -14,7 +14,7 @@
 export default {
   name: "ListView",
   components: {
-    listTodos: () => import("@/components/ListTodos"),
+    ListTodos: () => import("@/components/ListTodos"),
   },
   data() {
     return {
@@ -52,5 +52,5 @@ export default {
 </script>
 
 <style>
-@import url("../assets/css/ListView.css");
+@import url("../assets/css/list-view.css");
 </style>

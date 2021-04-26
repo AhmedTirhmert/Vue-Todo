@@ -75,8 +75,6 @@ export default {
       profileInfos: {
         fullName: "",
         email: "",
-        fullName: "",
-        fullName: "",
       },
     };
   },
