@@ -56,6 +56,7 @@ const actions = {
               email: payload.email,
               picture: url,
               created_at: Date.now(),
+              uodated_at: Date.now(),
               password: sha256(payload.password),
             })
             .then(() => {

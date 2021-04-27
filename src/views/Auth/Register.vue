@@ -148,7 +148,6 @@ export default {
     },
     passwordInput() {
       let passwordError = this.$refs.passwordError;
-
       if (
         /^(?=.*[0-9])(?=.*[a-z0-9])(?=.*[A-Z0-9])([a-zA-Z0-9]{6,})$/.test(
           this.form.password
