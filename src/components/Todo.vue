@@ -12,7 +12,7 @@
           class="todoInput"
           rows="1"
           type="text"
-          v-model.lazy="Todo.content"
+          v-model.lazy="todo.content"
           :ref="`autoGrowInput${todoKey}`"
           @input="inputing(`autoGrowInput${todoKey}`)"
         />
@@ -24,7 +24,7 @@
           {{ Todo.content }}
         </p> -->
         <span class="todo-date px-sm text--end text--gray2 text--italic">{{
-          Todo.created_at | carbonJs()
+          todo.created_at | carbonJs()
         }}</span>
       </div>
     </div>
@@ -46,7 +46,7 @@ export default {
   mixins: [filters],
   name: "Todo",
   props: {
-    Todo: {},
+    todo: {},
     todoKey: {
       type: String,
       required: true,
@@ -54,9 +54,6 @@ export default {
   },
   methods: {
     inputing(ta) {
-      //   console.log(ta);
-      //   console.log(this.$refs);
-
       this.$refs[ta].style.height = "inherit";
       let TA = this.$refs[ta];
       let Computed = window.getComputedStyle(TA);
@@ -64,10 +61,7 @@ export default {
         parseFloat(Computed.paddingTop, 10) +
         parseFloat(Computed.paddingBottom, 10) +
         TA.scrollHeight;
-      //   console.log("Scroll Height => ", TA.scrollHeight);
-      //   console.log(height);
       TA.style.height = `${height - 20}px`;
-      //   console.log("TA height => ", TA.style.height);
     },
     markTodoDone(todoKey) {
       console.log("Done => ", todoKey);

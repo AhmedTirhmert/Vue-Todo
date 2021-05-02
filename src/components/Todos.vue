@@ -1,11 +1,11 @@
 <template>
   <div class="listsBox radius-xs">
     <h2 class="radius-sm color--heading2">Latest Todos</h2>
-    <section class="todosSection">
+    <section v-if="Todos" class="todosSection">
       <todo
         v-for="(todo, key) in Todos"
         :key="todo.id"
-        :Todo="todo"
+        :todo="todo"
         @TodoClicked="todoClicked"
         :todoKey="key"
         :Editable="false"

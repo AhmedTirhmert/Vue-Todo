@@ -1,4 +1,4 @@
-<template>
+<template >
   <transition name="fade">
     <div class="modal" v-if="show">
       <div class="modal-backdrop" @click="closeModal()" />
@@ -11,7 +11,7 @@
         </div>
 
         <div class="modal-body">
-          <span v-if="trash" class="radius-xl trash-icon"
+          <span v-if="!success" class="radius-xl trash-icon"
             ><i class="fas fa-trash"></i
           ></span>
           <span v-else class="radius-xl check-icon"
@@ -20,7 +20,10 @@
         </div>
 
         <div class="modal-footer">
-          <slot name="footer" />
+          <slot v-if="!success" name="footer" />
+          <div v-else>
+            <button class="cancel" @click="$emit('closeModal')">Close</button>
+          </div>
         </div>
       </div>
     </div>
@@ -30,6 +33,12 @@
 <script>
 export default {
   name: "Modal",
+  props: {
+    success: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       show: false,

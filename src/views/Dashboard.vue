@@ -2,7 +2,7 @@
   <section class="dashboard">
     <h2 class="color--heading1 text-center mb-lg">Dashboard</h2>
     <lists :Lists="lists" />
-    <todos :Todos="todos" @todoClicked="viewList" />
+    <todos :Todos="todos" />
   </section>
 </template>
 

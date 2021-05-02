@@ -42,6 +42,7 @@
 }
 .todoInput:focus {
   color: black;
+  background-color: white;
   filter: drop-shadow(5px 5px 2px rgba(0, 0, 0, 0.2));
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
