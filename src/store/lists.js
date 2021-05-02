@@ -16,9 +16,6 @@ const mutations = {
   setUserLists(state, payload) {
     Vue.set(state.lists, payload.listId, payload);
   },
-  resetUserLists(state) {
-    Vue.set(state, "lists", {});
-  },
   deleteListById(state, listId) {
     Vue.delete(state.lists, listId);
   },
@@ -35,7 +32,6 @@ const mutations = {
 //methods to manipulate state data and triger mutations  can be async REQUESTS TO SERVERS
 const actions = {
   getUserLists({ commit, rootState }) {
-    commit("resetUserLists");
     fbFirestore
       .collection("Lists")
       .where("authorId", "==", rootState.auth.currentUser.user_id)
@@ -44,7 +40,10 @@ const actions = {
           commit("setUserLists", doc.data());
         });
         querySnapshot.docChanges().forEach((change) => {
-          console.log(change.type);
+          if (change.type == "removed") {
+            commit("deleteListById", change.doc.data().listId);
+            // console.log("removed List => ", change.doc.data());
+          }
         });
       });
   },
@@ -95,7 +94,7 @@ const actions = {
       });
     }
   },
-  deleteListById({ commit, dispatch }, listId) {
+  deleteListById({ commit }, listId) {
     console.log(listId);
     const deleteListById = fbFirestore.collection("Lists").doc(listId);
     deleteListById.get().then((doc) => {
@@ -103,11 +102,7 @@ const actions = {
         deleteListById
           .delete()
           .then(() => {
-            commit("deleteListById", listId);
-
-            dispatch("getUserLists");
             commit("setDeleteListSuccess", true);
-
             console.log("Deleted Successfully => ", listId);
           })
           .catch((error) => {

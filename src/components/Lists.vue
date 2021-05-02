@@ -169,6 +169,7 @@ export default {
     ...mapMutations("lists", ["setNewListError", "setDeleteListSuccess"]),
     titleCase(str) {
       return str
+        .trim()
         .toLowerCase()
         .split(" ")
         .map(function (word) {
