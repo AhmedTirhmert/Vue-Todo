@@ -102,13 +102,9 @@ export default {
     ...mapMutations("auth", ["setRegisterError"]),
     nameInput() {
       let fullNameError = this.$refs.fullNameError;
-<<<<<<< HEAD
-      if (/^[A-Za-z]*( [a-z]([-']?[a-z]{1,2})*)+$/.test(this.form.fullName)) {
-=======
       if (
         /^[A-Za-z]*( [A-Za-z]([-']?[A-Za-z]{1,2})*)+$/.test(this.form.fullName)
       ) {
->>>>>>> lists-page
         this.Validation.fullName = true;
         fullNameError.style.display = "none";
       } else {

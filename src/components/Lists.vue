@@ -1,35 +1,9 @@
 <template>
   <div class="listsBox radius-xs">
     <h2 v-if="Heading" class="radius-sm color--heading2">Lists</h2>
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <div v-if="!Lists" class="noListsSection">No Lists Yet</div>
-    <section v-else class="listsSection" :class="Heading ? '' : 'py-lg px-md'">
-      <div
-        :class="Actions ? 'list-with-actions-containner' : 'list-containner'"
-        v-for="(list, key) in Lists"
-        :key="key"
-      >
-        <router-link
-          :ref="`Link${list.listId}`"
-          class="listsItem radius-sm"
-          :to="{ name: 'List', params: { listId: list.listId } }"
-        >
-          {{ list.title }}
-        </router-link>
-        <input
-          :ref="`Input${list.listId}`"
-          class="listInput"
-          type="text"
-          :value="list.title"
-          @keyup.enter="save(list.listId)"
-        />
-=======
->>>>>>> lists-page
 
-=======
     <div v-if="!Lists" class="noListsSection">No Lists Yet</div>
->>>>>>> lists-page
+
     <section class="listsSection" :class="Heading ? '' : 'py-lg px-md'">
       <div v-if="Actions" class="new-list-section radius-sm">
         <span
