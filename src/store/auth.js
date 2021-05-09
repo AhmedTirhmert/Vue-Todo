@@ -178,6 +178,8 @@ const actions = {
         } else {
           commit("setCurrentUser", null);
           commit("lists/resetUserLists", null, { root: true });
+          commit("todos/resetListTodos", null, { root: true });
+          commit("todos/resetRecentTodos", null, { root: true });
           resolve(false);
         }
       });

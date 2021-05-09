@@ -57,11 +57,12 @@ const actions = {
     fbFirestore
       .collection("Lists")
       .where("title", "==", title)
+      .where("authorId", "==", rootState.auth.currentUser.user_id)
       .get()
       .then((doc) => {
         // console.log("Existing DOC => ", doc);
         if (doc.size == 0) {
-          console.log("we are adding the new List ");
+          // console.log("we are adding the new List ");
           let newListRef = fbFirestore.collection("Lists").doc();
           let listId = newListRef.id;
           newListRef
@@ -81,7 +82,7 @@ const actions = {
               commit("setNewListLoading", false);
             });
         } else {
-          console.log("we are throwing an error for adding the new List ");
+          // console.log("we are throwing an error for adding the new List ");
           commit("setNewListLoading", false);
           commit("setNewListError", "List Already Existes");
         }
@@ -99,15 +100,25 @@ const actions = {
     }
   },
   deleteListById({ commit }, listId) {
-    console.log(listId);
-    const deleteListById = fbFirestore.collection("Lists").doc(listId);
-    deleteListById.get().then((doc) => {
+    // console.log(listId);
+    const deleteListByIdRef = fbFirestore.collection("Lists").doc(listId);
+    const deletedListTodosRef = fbFirestore
+      .collection("Todos")
+      .where("listId", "==", listId);
+    deleteListByIdRef.get().then((doc) => {
       if (doc.exists) {
-        deleteListById
+        deleteListByIdRef
           .delete()
           .then(() => {
-            commit("setDeleteListSuccess", true);
-            console.log("Deleted Successfully => ", listId);
+            deletedListTodosRef.get().then((docs) => {
+              docs.forEach((doc) => {
+                if (doc.exists) {
+                  fbFirestore.doc(doc.ref.path).delete();
+                }
+              });
+              commit("setDeleteListSuccess", true);
+              // console.log("Deleted Successfully => ", listId);
+            });
           })
           .catch((error) => {
             console.log(error.message);
