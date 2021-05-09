@@ -67,26 +67,46 @@ const actions = {
   },
   addTodo({ commit, rootState }, payload) {
     commit("setNewTodoLoading", true);
+    let newTodoExistanceCheck = fbFirestore
+      .collection("Todos")
+      .where("content", "==", payload.content)
+      .where("listId", "==", payload.listId);
     let newTodoRef = fbFirestore.collection("Todos").doc();
     let newTodoId = newTodoRef.id;
-    newTodoRef
-      .set({
-        todoId: newTodoId,
-        content: payload.content,
-        done: false,
-        listId: payload.listId,
-        userId: rootState.auth.currentUser.user_id,
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-      })
-      .then(() => {
-        commit("setNewTodoLoading", false);
-      })
-      .catch((error) => {
-        commit("setNewTodoError", error.message);
-
-        commit("setNewTodoLoading", false);
-      });
+    newTodoExistanceCheck.get().then((docs) => {
+      if (docs.size > 0) {
+        let existingTodo = docs.docs[0].data();
+        if (existingTodo.done) {
+          commit(
+            "setNewTodoError",
+            "that Todo is alreaady done, would you like to Undone it!"
+          );
+        } else {
+          commit(
+            "setNewTodoError",
+            "that Todo is already existe in this List!"
+          );
+        }
+      } else {
+        newTodoRef
+          .set({
+            todoId: newTodoId,
+            content: payload.content,
+            done: false,
+            listId: payload.listId,
+            userId: rootState.auth.currentUser.user_id,
+            createdAt: Date.now(),
+            updatedAt: Date.now(),
+          })
+          .then(() => {
+            commit("setNewTodoLoading", false);
+          })
+          .catch((error) => {
+            commit("setNewTodoError", error.message);
+            commit("setNewTodoLoading", false);
+          });
+      }
+    });
   },
   editTodoById(context, payload) {
     let todoRef = fbFirestore.collection("Todos").doc(payload.todoId);
