@@ -1,7 +1,7 @@
 <template >
   <transition name="fade">
     <div class="modal" v-if="show">
-      <div class="modal-backdrop" @click="closeModal()" />
+      <div class="modal-backdrop" @click="modalBackdropClose()" />
       <div class="modal-dialog">
         <div class="modal-header">
           <slot name="header" />
@@ -46,6 +46,10 @@ export default {
     };
   },
   methods: {
+    modalBackdropClose() {
+      this.$emit("modalBackdropClose");
+      this.closeModal;
+    },
     closeModal() {
       this.show = false;
       document.querySelector("body").classList.remove("overflow-hidden");

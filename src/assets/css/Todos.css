@@ -108,4 +108,7 @@
   }
 }
 @media screen and (min-width: 320px) and (max-width: 480px) {
+  .todo-actions {
+    gap: 0.1em;
+  }
 }

@@ -16,6 +16,9 @@ const mutations = {
   setUserLists(state, payload) {
     Vue.set(state.lists, payload.listId, payload);
   },
+  resetUserLists(state) {
+    state.lists = {};
+  },
   deleteListById(state, listId) {
     Vue.delete(state.lists, listId);
   },
@@ -32,20 +35,21 @@ const mutations = {
 //methods to manipulate state data and triger mutations  can be async REQUESTS TO SERVERS
 const actions = {
   getUserLists({ commit, rootState }) {
-    fbFirestore
+    const userListsRef = fbFirestore
       .collection("Lists")
-      .where("authorId", "==", rootState.auth.currentUser.user_id)
-      .onSnapshot((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          commit("setUserLists", doc.data());
-        });
-        querySnapshot.docChanges().forEach((change) => {
-          if (change.type == "removed") {
-            commit("deleteListById", change.doc.data().listId);
-            // console.log("removed List => ", change.doc.data());
-          }
-        });
+      .where("authorId", "==", rootState.auth.currentUser.user_id);
+
+    userListsRef.onSnapshot((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        commit("setUserLists", doc.data());
       });
+      querySnapshot.docChanges().forEach((change) => {
+        if (change.type == "removed") {
+          commit("deleteListById", change.doc.data().listId);
+          // console.log("removed List => ", change.doc.data());
+        }
+      });
+    });
   },
   addList({ commit, rootState }, title) {
     commit("setNewListLoading", true);
@@ -55,7 +59,7 @@ const actions = {
       .where("title", "==", title)
       .get()
       .then((doc) => {
-        console.log("Existing DOC => ", doc);
+        // console.log("Existing DOC => ", doc);
         if (doc.size == 0) {
           console.log("we are adding the new List ");
           let newListRef = fbFirestore.collection("Lists").doc();
@@ -116,6 +120,18 @@ const actions = {
 const getters = {
   userLists: (state) => {
     return state.lists;
+  },
+  dashboardUserLists: (state) => {
+    let listsKeys = Object.keys(state.lists);
+    let res = {};
+    if (state.lists[listsKeys[0]]) {
+      Vue.set(res, listsKeys[0], state.lists[listsKeys[0]]);
+    }
+    if (state.lists[listsKeys[1]]) {
+      Vue.set(res, listsKeys[1], state.lists[listsKeys[1]]);
+    }
+
+    return res;
   },
   getListById: (state) => (listId) => {
     return state.lists[listId];

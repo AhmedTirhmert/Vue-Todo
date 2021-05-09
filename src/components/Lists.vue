@@ -1,8 +1,8 @@
 <template>
   <div class="listsBox radius-xs">
     <h2 v-if="Heading" class="radius-sm color--heading2">Lists</h2>
-    <div v-if="!Lists" class="noListsSection">No Lists Yet</div>
-    <section v-else class="listsSection" :class="Heading ? '' : 'py-lg px-md'">
+
+    <section class="listsSection" :class="Heading ? '' : 'py-lg px-md'">
       <div v-if="Actions" class="new-list-section radius-sm">
         <span
           v-if="!newList.visible"
@@ -45,49 +45,55 @@
           </button>
         </div>
       </div>
-      <div
-        :class="Actions ? 'list-with-actions-containner' : 'list-containner'"
-        v-for="(list, key) in Lists"
-        :key="key"
-      >
-        <router-link
-          :ref="`Link${list.listId}`"
-          class="listsItem radius-sm"
-          :to="{ name: 'List', params: { listId: list.listId } }"
+      <div v-if="Object.keys(Lists).length == 0" class="no-lists">
+        No Lists Yet
+      </div>
+      <div v-else>
+        <div
+          class="mb-sm"
+          :class="Actions ? 'list-with-actions-containner' : 'list-containner'"
+          v-for="(list, key) in Lists"
+          :key="key"
         >
-          {{ list.title }}
-        </router-link>
-        <input
-          :ref="`updateListInput${list.listId}`"
-          class="listInput"
-          type="text"
-          :value="list.title"
-          @keypress.enter="save(list.listId)"
-        />
-        <button
-          :ref="`Edit${list.listId}`"
-          @click="editList(list.listId)"
-          v-if="Actions"
-          class="btn radius-lg listAction color--success"
-        >
-          <i class="fas fa-pen"></i>
-        </button>
-        <button
-          @click="save(list.listId)"
-          :ref="`Save${list.listId}`"
-          v-if="Actions"
-          class="btn radius-lg listAction color--success"
-          style="display: none"
-        >
-          <i class="fas fa-check"></i>
-        </button>
-        <button
-          @click="openDeleteListModal(list.listId)"
-          v-if="Actions"
-          class="btn radius-lg listAction color--danger"
-        >
-          <i class="fas fa-trash"></i>
-        </button>
+          <router-link
+            :ref="`Link${list.listId}`"
+            class="listsItem radius-sm"
+            :to="{ name: 'List', params: { listId: list.listId } }"
+          >
+            {{ list.title }}
+          </router-link>
+          <input
+            :ref="`updateListInput${list.listId}`"
+            class="listInput"
+            type="text"
+            :value="list.title"
+            @keypress.enter="save(list.listId)"
+          />
+          <button
+            :ref="`Edit${list.listId}`"
+            @click="editList(list.listId)"
+            v-if="Actions"
+            class="btn radius-lg listAction color--success"
+          >
+            <i class="fas fa-pen"></i>
+          </button>
+          <button
+            @click="save(list.listId)"
+            :ref="`Save${list.listId}`"
+            v-if="Actions"
+            class="btn radius-lg listAction color--success"
+            style="display: none"
+          >
+            <i class="fas fa-check"></i>
+          </button>
+          <button
+            @click="openDeleteListModal(list.listId)"
+            v-if="Actions"
+            class="btn radius-lg listAction color--danger"
+          >
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
       </div>
 
       <div v-if="viewMore" class="viewMoreSection">
@@ -95,7 +101,7 @@
           :to="{ name: 'Lists' }"
           class="btn btn-primary radius-md py-sm px-lg"
         >
-          All Lists
+          {{ Object.keys(Lists).length == 0 ? "Add Lists" : "All Lists" }}
         </router-link>
       </div>
     </section>
@@ -162,6 +168,7 @@ export default {
     };
   },
   mounted() {
+    console.log(!this.Lists);
     // this.newList.visible = true;
   },
   methods: {
@@ -198,7 +205,7 @@ export default {
       let updatedListValue = this.$refs[`updateListInput${listId}`][0].value;
       this.updateListById({
         listId: listId,
-        title: updatedListValue,
+        title: this.titleCase(updatedListValue),
       });
     },
     openDeleteListModal(listId) {

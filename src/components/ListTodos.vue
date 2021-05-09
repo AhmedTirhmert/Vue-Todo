@@ -1,13 +1,18 @@
 <template>
   <div class="listBox radius-xs">
     <div class="listTitle">
-      <h2 class="radius-sm px-lg py-xs color--heading2">{{ listTitle }}</h2>
+      <h2
+        v-if="getListById(listId)"
+        class="radius-sm px-lg py-xs color--heading2"
+      >
+        {{ getListById(listId).title }}
+      </h2>
     </div>
     <div class="new-todo-section radius-sm">
       <span
         class="text--gray2 text--italic text--center mb-md"
         :class="newTodo.loading ? 'loading' : ''"
-        @click="newTodo.visible = !newTodo.visible"
+        @click="showNewTodoSection"
         >Click to add new Todos...</span
       >
       <div class="new-todo-loading" v-if="newTodo.loading">
@@ -15,64 +20,67 @@
       </div>
       <div
         class="new-todo"
-        v-if="newTodo.visible"
+        v-show="newTodo.visible"
         :class="newTodo.loading ? 'loading' : ''"
       >
         <textarea
           class="new-todo-input"
           type="text"
           ref="newTodoInput"
-          v-model.lazy="newTodo.content"
+          v-model="newTodo.content"
           @input="autoGrowInput()"
+          @keydown.esc="newTodo.visible = false"
+          @keyup.ctrl.enter="addNewTodo()"
           placeholder="New Todo..."
         />
-        <button class="btn radius-lg add-todo-btn" @click="addTodo()">
+        <button class="btn radius-lg add-todo-btn" @click="addNewTodo()">
           <i class="fa"></i>
         </button>
       </div>
     </div>
-    <section v-if="Todos" class="todosSection">
+    <section v-if="listTodos" class="todosSection">
       <todo
-        v-for="(todo, key) in Todos"
+        v-for="(todo, key) in listTodos"
         :key="key"
         :todoKey="key"
         :todo="todo"
         :Editable="true"
+        @deleteTodoById="deleteTodoById"
       />
     </section>
-    <div v-else class="no-todos">No Todos</div>
+    <div v-else class="no-todos">No Todos Yet</div>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "listTodos",
   components: {
     Todo: () => import("@/components/Todo"),
   },
   props: {
-    listTitle: {
+    listId: {
       type: String,
-      required: true,
-    },
-    Todos: {
-      type: Object,
       required: true,
     },
   },
   data() {
     return {
       newTodo: {
-        visible: false,
-        loading: false,
         content: null,
+        visible: false,
       },
     };
+  },
+  created() {
+    this.getListTodos(this.listId);
   },
   mounted() {
     this.autoGrowInput();
   },
   methods: {
+    ...mapActions("todos", ["addTodo", "getListTodos"]),
     autoGrowInput() {
       if (this.newTodo.visible) {
         this.$refs.newTodoInput.style.height = "inherit";
@@ -85,20 +93,30 @@ export default {
         textArea.style.height = `${height - 20}px`;
       }
     },
-    addTodo() {
-      this.newTodo.loading = true;
-      this.Todos["todos1"] = {
-        content: this.newTodo.content,
-        list_id: "list2",
-        created_at: Date.now() - Math.floor(Math.random() * 1001220250),
-      };
-
-      setTimeout(() => {
-        this.newTodo.loading = false;
-        this.newTodo.visible = false;
-        this.newTodo.content = null;
-      }, 3000);
+    showNewTodoSection() {
+      this.newTodo.visible = !this.newTodo.visible;
+      if (this.newTodo.visible) {
+        this.$nextTick(() => {
+          this.$refs.newTodoInput.focus();
+        });
+      }
     },
+    addNewTodo() {
+      if (this.newTodo.content && this.newTodo.content.length > 1) {
+        this.addTodo({
+          listId: this.listId,
+          content: this.newTodo.content,
+        });
+        this.newTodo.content = null;
+      }
+    },
+    deleteTodoById(value) {
+      this.$emit("deleteTodoById", value);
+    },
+  },
+  computed: {
+    ...mapGetters("lists", ["getListById"]),
+    ...mapGetters("todos", ["listTodos"]),
   },
 };
 </script>

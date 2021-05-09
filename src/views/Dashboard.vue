@@ -1,93 +1,68 @@
 <template>
   <section class="dashboard">
     <h2 class="color--heading1 text-center mb-lg">Dashboard</h2>
-    <lists :Lists="lists" />
-    <todos :Todos="todos" />
+    <lists v-if="dashboardUserLists" :Lists="dashboardUserLists" />
+    <todos :Todos="userRecentTodos" @deleteTodoById="deleteTodoModal" />
+    <delete-modal
+      ref="todoDeleteModal"
+      :success="deleteTodoSuccess"
+      @modalBackdropClose="closeDeleteTodoModal()"
+      @closeModal="closeDeleteTodoModal()"
+    >
+      <template v-slot:header><h1>Delete List</h1> </template>
+      <template v-slot:sub-header>
+        You sure you wanna delete
+        <br /><b class="color--danger">{{ todoDelete.content }}</b></template
+      >
+      <template v-slot:footer>
+        <button class="cancel" @click="closeDeleteTodoModal()">Cancel</button>
+        <button class="accept" @click="deleteTodoById(todoDelete.todoId)">
+          Yes
+        </button>
+      </template>
+    </delete-modal>
   </section>
 </template>
 
 
 <script>
+import { mapGetters, mapMutations, mapActions } from "vuex";
+
 export default {
   components: {
     Todos: () => import("@/components/Todos"),
+    DeleteModal: () => import("@/components/DeleteModal"),
     Lists: () => import("@/components/Lists"),
   },
   name: "Dashboard",
   data: function () {
     return {
-      lists: {
-        list1: {
-          listId: "list1",
-          title: "SPORT",
-        },
-        list2: {
-          listId: "list2",
-          title: "STUDY",
-        },
-      },
-      todos: {
-        todo1: {
-          content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam ducimus nihil dignissimos voluptatibus illo quisquam laudantium sunt, dolor unde repellat.",
-          list_id: "list1",
-          created_at: Date.now() + Math.floor(Math.random() * 10),
-        },
-        todo2: {
-          content: "Workout after work",
-          list_id: "list1",
-          created_at: Date.now() + Math.floor(Math.random() * 10),
-        },
-        todo3: {
-          content: "do homeword",
-          list_id: "list2",
-          created_at: Date.now() + Math.floor(Math.random() * 1000),
-        },
-        todo4: {
-          content: "create todo app",
-          list_id: "list2",
-          created_at: Date.now() - Math.floor(Math.random() * 1001220250),
-        },
-        todo5: {
-          content: "play some league",
-          list_id: "list1",
-          created_at: Date.now() - Math.floor(Math.random() * 10125),
-        },
-        todo6: {
-          content: "Complete paython course",
-          list_id: "list2",
-          created_at: Date.now() + Math.floor(Math.random() * 10),
-        },
-        todo7: {
-          content: "Commit changes to Github",
-          list_id: "list2",
-          created_at: Date.now() + Math.floor(Math.random() * 10),
-        },
-        todo8: {
-          content: "Prepase presentation",
-          list_id: "list2",
-          created_at: Date.now() + Math.floor(Math.random() * 10),
-        },
-        todo9: {
-          content: "Prepase presentation",
-          list_id: "list2",
-          created_at: Date.now() - Math.floor(Math.random() * 2122313248),
-        },
-        todo10: {
-          content: "Prepase presentation",
-          list_id: "list2",
-          created_at: Date.now() - Math.floor(Math.random() * 10216431),
-        },
-      },
+      todoDelete: null,
     };
   },
   methods: {
-    viewList(listId) {
-      console.log(listId);
-      this.$router.push({ name: "List", params: { listId: listId } });
+    ...mapActions("todos", ["deleteTodoById"]),
+    ...mapMutations("todos", ["setDeleteTodoSuccess"]),
+    deleteTodoModal(listId) {
+      this.todoDelete = this.getTodoById(listId);
+      this.$refs.todoDeleteModal.openModal();
+    },
+    closeDeleteTodoModal() {
+      this.$refs.todoDeleteModal.closeModal();
+      this.setDeleteTodoSuccess(false);
+      this.todoDelete = null;
     },
   },
   mounted() {},
+
+  computed: {
+    ...mapGetters("lists", ["dashboardUserLists"]),
+    ...mapGetters("todos", [
+      "userRecentTodos",
+      "getTodoById",
+      "deleteTodoSuccess",
+    ]),
+  },
 };
 </script>
 
