@@ -5,7 +5,10 @@ import { fbFirestore } from "../firebase";
 const state = {
   newTodo: {
     loading: false,
-    error: null,
+    error: {
+      message: null,
+      todoId: null,
+    },
   },
   deleteTodo: {
     success: false,
@@ -31,7 +34,16 @@ const mutations = {
     Vue.set(state.newTodo, "loading", payload);
   },
   setNewTodoError(state, payload) {
-    Vue.set(state.newTodo, "error", payload);
+    Vue.set(state.newTodo.error, "message", payload.message);
+    if (payload.todoId) {
+      Vue.set(state.newTodo.error, "todoId", payload.todoId);
+    } else {
+      Vue.set(state.newTodo.error, "todoId", null);
+    }
+  },
+  resetNewTodoError(state) {
+    Vue.set(state.newTodo.error, "message", null);
+    Vue.set(state.newTodo.error, "todoId", null);
   },
   removeTodoById(state, todoId) {
     if (state.listTodos[todoId]) {
@@ -67,6 +79,7 @@ const actions = {
   },
   addTodo({ commit, rootState }, payload) {
     commit("setNewTodoLoading", true);
+    commit("resetNewTodoError");
     let newTodoExistanceCheck = fbFirestore
       .collection("Todos")
       .where("content", "==", payload.content)
@@ -77,15 +90,16 @@ const actions = {
       if (docs.size > 0) {
         let existingTodo = docs.docs[0].data();
         if (existingTodo.done) {
-          commit(
-            "setNewTodoError",
-            "that Todo is alreaady done, would you like to Undone it!"
-          );
+          commit("setNewTodoError", {
+            message: "Todo is alreaady done,",
+            todoId: existingTodo.todoId,
+          });
+          commit("setNewTodoLoading", false);
         } else {
-          commit(
-            "setNewTodoError",
-            "that Todo is already existe in this List!"
-          );
+          commit("setNewTodoError", {
+            message: "Todo is alreaady existe,",
+          });
+          commit("setNewTodoLoading", false);
         }
       } else {
         newTodoRef
@@ -122,6 +136,14 @@ const actions = {
       done: true,
       updatedAt: Date.now(),
     });
+  },
+  undoneTodoById({ commit }, payload) {
+    let doneTodoRef = fbFirestore.collection("Todos").doc(payload);
+    doneTodoRef.update({
+      done: false,
+      updatedAt: Date.now(),
+    });
+    commit("resetNewTodoError");
   },
   getUserRecentTodos({ commit, rootState }) {
     let recentTodosRef = fbFirestore
@@ -169,6 +191,12 @@ const getters = {
   },
   deleteTodoSuccess: (state) => {
     return state.deleteTodo.success;
+  },
+  addTodoError: (state) => {
+    return state.newTodo.error;
+  },
+  addTodoLoading: (state) => {
+    return state.newTodo.loading;
   },
 };
 export default {

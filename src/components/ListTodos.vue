@@ -23,16 +23,26 @@
         v-show="newTodo.visible"
         :class="newTodo.loading ? 'loading' : ''"
       >
-        <textarea
-          class="new-todo-input"
-          type="text"
-          ref="newTodoInput"
-          v-model="newTodo.content"
-          @input="autoGrowInput()"
-          @keydown.esc="newTodo.visible = false"
-          @keyup.ctrl.enter="addNewTodo()"
-          placeholder="New Todo..."
-        />
+        <div>
+          <textarea
+            class="new-todo-input"
+            type="text"
+            ref="newTodoInput"
+            v-model="newTodo.content"
+            @input="autoGrowInput()"
+            @keydown.esc="newTodo.visible = false"
+            @keyup.ctrl.enter="addNewTodo()"
+            placeholder="New Todo..."
+          />
+          <span class="new-list-input-error px-sm" v-show="addTodoError.message"
+            >{{ addTodoError.message }}
+            <b
+              v-show="addTodoError.todoId"
+              @click="undoneTodoById(addTodoError.todoId)"
+              >Undone it!</b
+            ></span
+          >
+        </div>
         <button class="btn radius-lg add-todo-btn" @click="addNewTodo()">
           <i class="fa"></i>
         </button>
@@ -53,7 +63,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
   name: "listTodos",
   components: {
@@ -80,7 +90,8 @@ export default {
     this.autoGrowInput();
   },
   methods: {
-    ...mapActions("todos", ["addTodo", "getListTodos"]),
+    ...mapActions("todos", ["addTodo", "getListTodos", "undoneTodoById"]),
+    ...mapMutations("todos", ["resetNewTodoError"]),
     autoGrowInput() {
       if (this.newTodo.visible) {
         this.$refs.newTodoInput.style.height = "inherit";
@@ -105,7 +116,7 @@ export default {
       if (this.newTodo.content && this.newTodo.content.length > 1) {
         this.addTodo({
           listId: this.listId,
-          content: this.newTodo.content,
+          content: this.newTodo.content.trim(),
         });
         this.newTodo.content = null;
       }
@@ -116,7 +127,14 @@ export default {
   },
   computed: {
     ...mapGetters("lists", ["getListById"]),
-    ...mapGetters("todos", ["listTodos"]),
+    ...mapGetters("todos", ["listTodos", "addTodoLoading", "addTodoError"]),
+  },
+  watch: {
+    "newTodo.visible"(val) {
+      if (!val) {
+        this.resetNewTodoError();
+      }
+    },
   },
 };
 </script>

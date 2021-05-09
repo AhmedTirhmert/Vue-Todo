@@ -190,3 +190,7 @@
   font-size: 0.8rem;
   font-weight: 500;
 }
+.new-list-input-error b {
+  cursor: pointer;
+  text-decoration: underline;
+}
