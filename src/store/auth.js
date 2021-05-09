@@ -99,7 +99,7 @@ const actions = {
       })
       .then(() => {
         let actionCodeSettings = {
-          url: `${process.env.VUE_APP_HOST_NAME}/login/?email=${User.email}`,
+          url: `https://todoapp-63f53.web.app/login/?email=${User.email}`,
         };
 
         User.sendEmailVerification(actionCodeSettings);

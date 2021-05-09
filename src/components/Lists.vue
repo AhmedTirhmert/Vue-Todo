@@ -20,7 +20,7 @@
           class="listInput"
           type="text"
           :value="list.title"
-          @keydown.enter="save(list.listId)"
+          @keyup.enter="save(list.listId)"
         />
 
         <button
