@@ -3,7 +3,6 @@ import router from "../router";
 import { fbAuth } from "@/firebase";
 import { fbFirestore } from "@/firebase";
 import { fbStorage } from "@/firebase";
-import { sha256 } from "js-sha256";
 
 // Global Variables
 const defaultAvatarURL =
@@ -57,7 +56,6 @@ const actions = {
               picture: url,
               created_at: Date.now(),
               uodated_at: Date.now(),
-              password: sha256(payload.password),
             })
             .then(() => {
               let actionCodeSettings = {
@@ -95,7 +93,6 @@ const actions = {
         email: payload.email,
         picture: defaultAvatarURL,
         created_at: Date.now(),
-        password: sha256(payload.password),
       })
       .then(() => {
         let actionCodeSettings = {
@@ -160,7 +157,7 @@ const actions = {
     commit("setCurrentUser", null);
     router.push({ name: "Login" });
   },
-  HandleAuthStateChange({ commit }) {
+  HandleAuthStateChange({ commit, dispatch }) {
     return new Promise((resolve, reject) => {
       fbAuth.onAuthStateChanged((User) => {
         if (User && User.emailVerified) {
@@ -170,7 +167,9 @@ const actions = {
             .get()
             .then((res) => {
               commit("setCurrentUser", res.data());
-              resolve(res.data());
+              dispatch("lists/getUserLists", null, { root: true });
+              dispatch("todos/getUserRecentTodos", null, { root: true });
+              resolve(true);
             })
             .catch((error) => {
               console.log(error);
@@ -178,7 +177,8 @@ const actions = {
             });
         } else {
           commit("setCurrentUser", null);
-          resolve("no User");
+          commit("lists/resetUserLists", null, { root: true });
+          resolve(false);
         }
       });
     });

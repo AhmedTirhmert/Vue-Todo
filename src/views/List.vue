@@ -1,52 +1,58 @@
 <template>
   <section class="list">
-    <!-- <h1 class="text--center py-sm radius-sm text--italic mb-xl">
-      <span class="">List Details : </span>
-      <span class="text--uppercase text--secondaryColor">{{
-        $route.params.listId
-      }}</span>
-    </h1> -->
-    <list-todos :listTitle="$route.params.listId" :Todos="todos" />
+    <list-todos
+      :listId="$route.params.listId"
+      @deleteTodoById="deleteTodoModal"
+    />
+    <delete-modal
+      ref="todoDeleteModal"
+      :success="deleteTodoSuccess"
+      @modalBackdropClose="closeDeleteTodoModal()"
+      @closeModal="closeDeleteTodoModal()"
+    >
+      <template v-slot:header><h1>Delete List</h1> </template>
+      <template v-slot:sub-header>
+        You sure you wanna delete
+        <br /><b class="color--danger">{{ todoDelete.content }}</b></template
+      >
+      <template v-slot:footer>
+        <button class="cancel" @click="closeDeleteTodoModal()">Cancel</button>
+        <button class="accept" @click="deleteTodoById(todoDelete.todoId)">
+          Yes
+        </button>
+      </template>
+    </delete-modal>
   </section>
 </template>
 
 <script>
+import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
-  name: "ListView",
+  name: "list",
   components: {
     ListTodos: () => import("@/components/ListTodos"),
+    DeleteModal: () => import("@/components/DeleteModal"),
   },
   data() {
     return {
-      todos: {
-        todo4: {
-          content:
-            "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta consectetur quo obcaecati facere totam alias temporibus dolores eligendi nam dolorum.",
-          list_id: "list2",
-          created_at: Date.now() - Math.floor(Math.random() * 1001220250),
-        },
-        todo5: {
-          content: "play some league",
-          list_id: "list1",
-          created_at: Date.now() - Math.floor(Math.random() * 10125),
-        },
-        todo6: {
-          content: "Complete paython course",
-          list_id: "list2",
-          created_at: Date.now() + Math.floor(Math.random() * 10),
-        },
-        todo7: {
-          content: "Commit changes to Github",
-          list_id: "list2",
-          created_at: Date.now() + Math.floor(Math.random() * 10),
-        },
-        todo8: {
-          content: "Prepase presentation",
-          list_id: "list2",
-          created_at: Date.now() + Math.floor(Math.random() * 10),
-        },
-      },
+      todoDelete: null,
     };
+  },
+  computed: {
+    ...mapGetters("todos", ["getTodoById", "deleteTodoSuccess"]),
+  },
+  methods: {
+    ...mapActions("todos", ["deleteTodoById"]),
+    ...mapMutations("todos", ["setDeleteTodoSuccess"]),
+    deleteTodoModal(listId) {
+      this.todoDelete = this.getTodoById(listId);
+      this.$refs.todoDeleteModal.openModal();
+    },
+    closeDeleteTodoModal() {
+      this.$refs.todoDeleteModal.closeModal();
+      this.setDeleteTodoSuccess(false);
+      this.todoDelete = null;
+    },
   },
 };
 </script>

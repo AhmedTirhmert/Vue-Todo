@@ -17,6 +17,7 @@ firebase.analytics();
 
 const fbFirestore = firebase.firestore();
 const fbAuth = firebase.auth();
+const fb_auth = firebase.auth;
 const fbStorage = firebase.storage();
 
-export { fbAuth, fbFirestore, fbStorage };
+export { fbAuth, fbFirestore, fbStorage, fb_auth };
