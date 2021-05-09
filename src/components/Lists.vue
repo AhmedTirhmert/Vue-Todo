@@ -2,6 +2,7 @@
   <div class="listsBox radius-xs">
     <h2 v-if="Heading" class="radius-sm color--heading2">Lists</h2>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <div v-if="!Lists" class="noListsSection">No Lists Yet</div>
     <section v-else class="listsSection" :class="Heading ? '' : 'py-lg px-md'">
       <div
@@ -26,6 +27,9 @@
 =======
 >>>>>>> lists-page
 
+=======
+    <div v-if="!Lists" class="noListsSection">No Lists Yet</div>
+>>>>>>> lists-page
     <section class="listsSection" :class="Heading ? '' : 'py-lg px-md'">
       <div v-if="Actions" class="new-list-section radius-sm">
         <span
@@ -50,7 +54,7 @@
               :ref="`newListInput`"
               v-model.lazy="newList.title"
               placeholder="New List..."
-              @keypress.enter="add()"
+              @keyup.enter="add()"
               @keydown.esc="newList.visible = false"
             />
             <span class="new-list-input-error px-sm" v-show="addListError"
@@ -91,7 +95,7 @@
             class="listInput"
             type="text"
             :value="list.title"
-            @keypress.enter="save(list.listId)"
+            @keydown.enter="save(list.listId)"
           />
           <button
             :ref="`Edit${list.listId}`"
