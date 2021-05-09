@@ -90,3 +90,103 @@
 .listInput:focus {
   color: black;
 }
+.new-list-section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.new-list-section > span {
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.new-list {
+  display: grid;
+  gap: 1em;
+  grid-template-columns: 10fr 1fr 1fr;
+}
+.new-list-input {
+  border: none;
+  padding: 0.7em 1em 0.7em 0.7em;
+  width: 100%;
+  overflow: hidden;
+  resize: none;
+  border-radius: 0.5rem;
+  font-family: var(--ubuntu);
+  font-size: 1rem;
+  outline: none;
+  height: 42.5px;
+  background-color: var(--cardBg);
+  display: inline-block;
+  color: rgba(44, 43, 43, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.new-list-input:focus {
+  color: black;
+  background-color: white;
+  filter: drop-shadow(5px 5px 2px rgba(0, 0, 0, 0.2));
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.add-list-btn {
+  margin-left: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  outline: none;
+  border: 1px solid var(--borderPrimaryColor);
+}
+.add-list-btn > i::before {
+  font-family: "Font Awesome 5 Free";
+  content: "\f055";
+  font-size: 2.2rem;
+  color: var(--success);
+}
+.close-btn {
+  margin-left: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  outline: none;
+  border: 1px solid var(--borderPrimaryColor);
+}
+.close-btn > i::before {
+  font-family: "Font Awesome 5 Free";
+  content: "\f057";
+  font-size: 2.2rem;
+  color: var(--danger);
+}
+.add-list-btn:hover {
+  filter: drop-shadow(3px 6px 2px rgba(0, 0, 0, 0.2));
+}
+.loading {
+  filter: blur(2px) grayscale(30);
+  pointer-events: none;
+}
+
+.new-list-loading {
+  position: absolute;
+  z-index: 10;
+  text-align: center;
+  font-size: 2rem;
+  color: var(--success);
+  top: 0px;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  cursor: progress;
+}
+.no-lists {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30vh;
+  font-size: 2.3rem;
+  font-family: var(--ubuntu);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--gray2);
+}
+.new-list-input-error {
+  color: var(--danger);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
