@@ -57,6 +57,6 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import url("../assets/css/list-view.css");
 </style>

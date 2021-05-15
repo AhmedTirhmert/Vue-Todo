@@ -3,15 +3,15 @@
     <div class="todo-content">
       <div class="todos-item radius-sm">
         <textarea
-          class="todoInput"
+          class="todo-input"
           rows="1"
           type="text"
           v-model.lazy="todo.content"
           :ref="`autoGrowInput${todoKey}`"
-          @input="inputing()"
+          @input="resizeTextArea()"
         />
-        <span class="todo-date px-sm text--end text--gray2 text--italic">{{
-          todo.createdAt | carbonJs()
+        <span class="todo-date px-sm text_end text_gray_2 text_italic">{{
+          todo.createdAt | fromNow()
         }}</span>
       </div>
     </div>
@@ -35,7 +35,6 @@ import { mapActions } from "vuex";
 
 export default {
   mixins: [filters],
-  components: {},
   name: "Todo",
   props: {
     todo: {},
@@ -46,7 +45,7 @@ export default {
   },
   methods: {
     ...mapActions("todos", ["editTodoById", "deleteTodoById", "todoDoneById"]),
-    inputing() {
+    resizeTextArea() {
       if (this.$refs[`autoGrowInput${this.todoKey}`]) {
         this.$refs[`autoGrowInput${this.todoKey}`].style.height = "inherit";
         let TA = this.$refs[`autoGrowInput${this.todoKey}`];
@@ -63,7 +62,7 @@ export default {
     },
   },
   mounted() {
-    this.inputing();
+    this.resizeTextArea();
   },
   watch: {
     "todo.content"(newContent) {
@@ -71,11 +70,8 @@ export default {
         todoId: this.todo.todoId,
         todoContent: newContent,
       });
-      this.inputing();
+      this.resizeTextArea();
     },
   },
 };
 </script>
-
-<style>
-</style>

@@ -1,6 +1,6 @@
 <template>
   <section class="dashboard">
-    <h2 class="color--heading1 text-center mb-lg">Dashboard</h2>
+    <h2 class="color_heading_1 text_center mb-lg">Dashboard</h2>
     <lists v-if="dashboardUserLists" :Lists="dashboardUserLists" />
     <todos :Todos="userRecentTodos" @deleteTodoById="deleteTodoModal" />
     <delete-modal
@@ -12,7 +12,7 @@
       <template v-slot:header><h1>Delete List</h1> </template>
       <template v-slot:sub-header>
         You sure you wanna delete
-        <br /><b class="color--danger">{{ todoDelete.content }}</b></template
+        <br /><b class="color_danger">{{ todoDelete.content }}</b></template
       >
       <template v-slot:footer>
         <button class="cancel" @click="closeDeleteTodoModal()">Cancel</button>
@@ -53,7 +53,6 @@ export default {
       this.todoDelete = null;
     },
   },
-  mounted() {},
 
   computed: {
     ...mapGetters("lists", ["dashboardUserLists"]),
@@ -65,8 +64,4 @@ export default {
   },
 };
 </script>
-
-
-<style scoped>
-</style>
 

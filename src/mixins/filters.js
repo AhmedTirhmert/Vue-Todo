@@ -1,8 +1,8 @@
 import moment from "moment";
-moment.locale("fr");
+moment.locale("en");
 export default {
   filters: {
-    carbonJs(val) {
+    fromNow(val) {
       return moment(val).fromNow();
     },
   },

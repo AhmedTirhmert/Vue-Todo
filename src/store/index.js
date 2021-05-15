@@ -1,17 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import auth from "./auth";
-import lists from "./lists";
-import todos from "./todos";
-import profile from "./profile";
+import auth from "./modules/auth";
+import lists from "./modules/lists";
+import todos from "./modules/todos";
+import profile from "./modules/profile";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  actions: {},
-  mutations: {},
-  getters: {},
   modules: {
     auth,
     profile,

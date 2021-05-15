@@ -1,6 +1,6 @@
 <template>
-  <section class="">
-    <h2 class="color--heading1 mb-md">Profile</h2>
+  <section>
+    <h2 class="color_heading_1 mb-md">Profile</h2>
     <div class="profile-section radius-sm py-lg px-lg">
       <app-alert
         v-if="profileError.message"
@@ -84,7 +84,7 @@
       <button
         class="btn profile-btn py-sm radius-lg"
         :class="!isFormValid ? 'btn-disabled' : ''"
-        @click="clicked()"
+        @click="submitChnages()"
         :disabled="!isFormValid"
       >
         <span v-if="!profileLoading">Save Changes</span>
@@ -125,7 +125,7 @@ export default {
   methods: {
     ...mapActions("profile", ["updateProfileInfos"]),
     ...mapMutations("profile", ["resetError"]),
-    clicked() {
+    submitChnages() {
       this.updateProfileInfos(this.profileInfos);
     },
     newProfilePicture(event) {
@@ -256,7 +256,7 @@ export default {
 </script>
 
 
-<style >
+<style scoped>
 @import url("../assets/css/Profile.css");
 </style>
 

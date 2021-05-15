@@ -12,12 +12,12 @@
   justify-content: space-between;
   z-index: 1;
 }
-.avatarImg {
+.avatar-img {
   width: 35px;
   height: 35px;
 }
 
-.avatarBtn {
+.avatar-btn {
   width: 35px;
   height: 35px;
   background-color: none;
@@ -27,7 +27,7 @@
   display: flex;
   cursor: pointer;
 }
-.avatarBtn::after {
+.avatar-btn::after {
   font-family: "Font Awesome 5 Free";
   font-size: 1rem;
   font-weight: 700;
@@ -38,12 +38,12 @@
   margin-left: 0.5em;
   padding-bottom: 0.5em;
 }
-.userDropdown {
+.user-dropdown {
   position: relative;
   height: 35px;
 }
 
-.userDropdown ul {
+.user-dropdown ul {
   position: absolute;
   background-color: var(--cardBg);
   width: 10rem;
@@ -60,36 +60,31 @@
   transform: translateY(10px);
   transition: all 0.4s ease;
 }
-.userDropdown ul li {
+.user-dropdown ul li {
   width: 100%;
   height: 100%;
 }
 .dd-link {
-  display: block;
   color: black;
 }
-.userDropdown ul button {
+.user-dropdown ul button {
   border: none;
   outline: none;
   width: 100%;
   background-color: transparent;
 }
-/* .userDropdown button:focus + ul {
-  display: block;
-  pointer-events: all;
-} */
-.userDropdown ul li a:hover {
+.user-dropdown ul li a:hover {
   background-color: #6a8c70;
   color: white;
 }
-.userDropdown ul li a:hover > i {
+.user-dropdown ul li a:hover > i {
   color: white;
 }
-.userDropdown ul li button:hover {
+.user-dropdown ul li button:hover {
   background-color: #6a8c70;
   color: white;
 }
-.userDropdown ul li button:hover > i {
+.user-dropdown ul li button:hover > i {
   color: white;
 }
 
@@ -128,12 +123,6 @@
 .login .btn i {
   display: none;
 }
-
-/* .header .login :hover {
-  background-color: var(--secondaryColor);
-  transform: scale(1.07);
-  border: none;
-} */
 /* --------------LO-GOUT------------------- */
 .logout {
   margin: 0px 5px;
@@ -151,10 +140,6 @@
   display: none;
 }
 
-/* .header .logout :hover {
-  background-color: var(--secondaryColor);
-  transform: scale(1.07);
-} */
 /* MOBILE LAYOUT */
 @media screen and (min-width: 320px) and (max-width: 480px) {
   .header .logo {

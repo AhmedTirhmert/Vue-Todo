@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h2 class="color--heading1 mb-md">Lists</h2>
+    <h2 class="color_heading_1 mb-md">Lists</h2>
     <user-lists
       :Heading="false"
       :viewMore="false"
@@ -11,19 +11,10 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   components: {
     userLists: () => import("@/components/Lists"),
-  },
-  mounted() {
-    this.getUserLists();
-  },
-  data() {
-    return {};
-  },
-  methods: {
-    ...mapActions("lists", ["getUserLists"]),
   },
   computed: {
     ...mapGetters("lists", ["userLists"]),
@@ -31,6 +22,6 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import url("../assets/css/Views/Lists.css");
 </style>

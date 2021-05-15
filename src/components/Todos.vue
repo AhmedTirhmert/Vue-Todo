@@ -1,7 +1,7 @@
 <template>
-  <div class="listsBox radius-xs">
-    <h2 class="radius-sm color--heading2">Latest Todos</h2>
-    <section class="todosSection">
+  <div class="lists-box radius-xs">
+    <h2 class="radius-sm color_heading_2">Latest Todos</h2>
+    <section class="todos-section">
       <div v-if="Object.keys(Todos).length > 0">
         <todo
           v-for="(todo, key) in Todos"
@@ -41,15 +41,5 @@ export default {
 </script>
 
 <style scoped>
-.no-todos {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 20vh;
-  font-size: 2.3rem;
-  font-family: var(--ubuntu);
-  font-weight: 400;
-  font-style: italic;
-  color: var(--gray2);
-}
+@import url("../assets/css/Todos.css");
 </style>

@@ -1,30 +1,17 @@
 @import url("Variables.css");
-.todosSection {
+.todos-section {
   padding: 0rem 1.5rem 1rem 1.5rem;
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.3em;
 }
-/* .todosItem {
-  background-color: var(--cardBg);
-  padding: 0.5em 1em;
-  font-family: var(--Yanone);
-  font-weight: 400;
-  line-height: 1.2em;
-  font-size: 1.3em;
-  cursor: pointer;
-  filter: drop-shadow(0px 1px 12px rgba(0, 0, 0, 0.1));
-} */
-/* .todosItem:hover {
-  background-color: hsl(120, 17%, 49%);
-  color: white;
-} */
+
 .todos-item {
   display: flex;
   flex-direction: column;
 }
 
-.todoInput {
+.todo-input {
   border: none;
   padding: 0.7em 1em 0.7em 0.7em;
   width: 100%;
@@ -40,7 +27,7 @@
   color: rgba(44, 43, 43, 0.9);
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
-.todoInput:focus {
+.todo-input:focus {
   color: black;
   background-color: white;
   filter: drop-shadow(5px 5px 2px rgba(0, 0, 0, 0.2));
@@ -50,19 +37,19 @@
   display: flex;
   flex-direction: column;
 }
-.todosSection {
+.todos-section {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.5rem;
 }
-.todosSection .todo-item {
+.todos-section .todo-item {
   display: flex;
   padding: 0;
 }
 .todo-date {
   font-size: 0.7em;
 }
-.listBox {
+.list-box {
   position: relative;
   margin-bottom: 3em;
 }
@@ -79,6 +66,17 @@
   grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
   gap: 1em;
   margin-left: 1em;
+}
+.no-todos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20vh;
+  font-size: 2.3rem;
+  font-family: var(--ubuntu);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--gray2);
 }
 .todo-actions .btn {
   margin: auto auto;
@@ -103,7 +101,7 @@
 }
 
 @media screen and (min-width: 481px) and (max-width: 768px) {
-  .todoInput {
+  .todo-input {
     font-size: 1.1rem;
   }
 }

@@ -1,5 +1,5 @@
 import Vue from "vue";
-import router from "../router";
+import router from "@/router";
 import { fbAuth } from "@/firebase";
 import { fbFirestore } from "@/firebase";
 import { fbStorage } from "@/firebase";
@@ -96,7 +96,7 @@ const actions = {
       })
       .then(() => {
         let actionCodeSettings = {
-          url: `https://todoapp-63f53.web.app/login/?email=${User.email}`,
+          url: `${process.env.VUE_APP_HOST_NAME}/login/?email=${User.email}`,
         };
 
         User.sendEmailVerification(actionCodeSettings);
@@ -135,7 +135,6 @@ const actions = {
       .signInWithEmailAndPassword(payload.email, payload.password)
       .then(() => {
         let User = fbAuth.currentUser;
-        // console.log(User);
         if (User.emailVerified) {
           commit("setCurrentUser", User);
           router.push({ name: "Dashboard" });
@@ -169,7 +168,7 @@ const actions = {
               commit("setCurrentUser", res.data());
               dispatch("lists/getUserLists", null, { root: true });
               dispatch("todos/getUserRecentTodos", null, { root: true });
-              resolve(true);
+              resolve();
             })
             .catch((error) => {
               console.log(error);
@@ -180,7 +179,7 @@ const actions = {
           commit("lists/resetUserLists", null, { root: true });
           commit("todos/resetListTodos", null, { root: true });
           commit("todos/resetRecentTodos", null, { root: true });
-          resolve(false);
+          resolve();
         }
       });
     });

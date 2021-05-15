@@ -24,17 +24,9 @@ const routes = [
       requireAuth: true,
     },
     component: () =>
-      import(/* webpackChunkName: "about" */ "@/views/Dashboard.vue"),
+      import(/* webpackChunkName: "dashboard" */ "@/views/Dashboard.vue"),
   },
-  {
-    path: "/todos",
-    name: "Todos",
-    meta: {
-      requireAuth: true,
-    },
-    component: () =>
-      import(/* webpackChunkName: "todos" */ "@/views/Todos.vue"),
-  },
+
   {
     path: "/list/:listId",
     name: "List",
@@ -49,7 +41,7 @@ const routes = [
     meta: {
       requireAuth: true,
     },
-    component: () => import(/* webpackChunkName: "Lists" */ "@/views/Lists"),
+    component: () => import(/* webpackChunkName: "lists" */ "@/views/Lists"),
   },
   {
     path: "/profile",
@@ -57,7 +49,8 @@ const routes = [
     meta: {
       requireAuth: true,
     },
-    component: () => import(/* webpackChunkName: "Lists" */ "@/views/Profile"),
+    component: () =>
+      import(/* webpackChunkName: "profile" */ "@/views/Profile"),
   },
 ];
 

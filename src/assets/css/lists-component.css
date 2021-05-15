@@ -1,11 +1,10 @@
-/* LISTS SECTION */
-.listsSection {
+.lists-section {
   padding: 0rem 1.5rem 1rem 1.5rem;
   display: grid;
   grid-template-columns: 1fr;
   gap: 1em;
 }
-.listsItem {
+.lists-item {
   color: black;
   font-family: var(--Yanone);
   font-weight: 400;
@@ -20,25 +19,25 @@
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.listsSection .listsItem:hover {
+.lists-section .lists-item:hover {
   background-color: hsl(120, 17%, 49%);
   color: white;
 }
-.viewMoreSection {
+.view-more-section {
   display: flex;
   margin-top: 0.7em;
   justify-content: flex-end;
 }
-.viewMoreSection .btn {
+.view-more-section .btn {
   background-color: var(--secondaryColor);
 }
-.viewMoreSection .btn:hover {
+.view-more-section .btn:hover {
   /* background-color: white;
   color: var(--primaryColor);
   filter: drop-shadow(0px 1px 12px rgba(0, 0, 0, 0.2)); */
   background-color: var(--primaryColor);
 }
-.noListsSection {
+.noLists-section {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,7 +57,7 @@
   display: grid;
   grid-template-columns: 11fr;
 }
-.listAction {
+.list-action {
   background-color: var(--cardBg);
   border: 1px solid var(--borderPrimaryColor) !important;
   padding: 0.5em 0.6em;
@@ -68,10 +67,10 @@
   margin-top: auto;
   margin-bottom: auto;
 }
-.listAction:hover {
+.list-action:hover {
   filter: drop-shadow(1px 1px 5px rgba(0, 0, 0, 0.3));
 }
-.listInput {
+.list-input {
   border: none;
   padding: 0.7em 0.5em 0.5em 0.5em;
   border-radius: 0.5rem;
@@ -87,7 +86,7 @@
   border: 1px solid var(--borderPrimaryColor);
   display: none;
 }
-.listInput:focus {
+.list-input:focus {
   color: black;
 }
 .new-list-section {

@@ -1,75 +1,80 @@
 <template>
-  <div class="authContainer">
-    <section class="authForm mt-md radius-md px-md py-md">
-      <h1 class="text--center mt-sm mb-md">Sign Up</h1>
+  <div class="auth-container">
+    <section class="auth-section mt-md radius-md px-md py-md">
+      <h1 class="text_center mt-sm mb-md">Sign Up</h1>
       <app-alert v-if="registerError" :message="registerError" type="danger" />
-      <div class="mb-md">
-        <input
-          type="text"
-          class="authInput radius-lg"
-          placeholder="Full Name"
-          @input="nameInput()"
-          v-model="form.fullName"
-        />
-        <p ref="fullNameError" class="input-error">Input error</p>
-      </div>
+      <form class="auth-form" @submit.prevent="Register()">
+        <div class="mb-md">
+          <input
+            type="text"
+            class="auth-input radius-lg"
+            placeholder="Full Name"
+            @input="nameValidation()"
+            v-model="form.fullName"
+          />
+          <p ref="fullNameError" class="input-error"></p>
+        </div>
 
-      <div class="mb-md">
-        <input
-          type="email"
-          class="authInput radius-lg"
-          placeholder="Email"
-          @input="emailInput()"
-          v-model="form.email"
-        />
-        <p ref="emailError" class="input-error">Input error</p>
-      </div>
-      <div class="mb-md">
-        <input
-          accept="image/png,image/jpeg"
-          type="file"
-          id="picture"
-          class="authFile radius-lg"
-          placeholder="Picture"
-          ref="picture"
-          @change="choosenImage"
-        />
-        <label ref="pictureLabel" class="radius-lg" for="picture"
-          >Chose a picture (Max 10Mb)</label
+        <div class="mb-md">
+          <input
+            type="email"
+            class="auth-input radius-lg"
+            placeholder="Email"
+            @input="emailValidation()"
+            v-model="form.email"
+          />
+          <p ref="emailError" class="input-error"></p>
+        </div>
+        <div class="mb-md">
+          <input
+            accept="image/png,image/jpeg"
+            type="file"
+            id="picture"
+            class="auth-file radius-lg"
+            ref="picture"
+            @change="pictureValidation"
+          />
+          <label ref="pictureLabel" class="radius-lg" for="picture"
+            >Chose a picture (Max 10Mb)</label
+          >
+          <p ref="pictureError" class="input-error"></p>
+        </div>
+
+        <div class="mb-md">
+          <input
+            type="password"
+            class="auth-input radius-lg"
+            placeholder="Password"
+            v-model="form.password"
+            @input="passwordValidation()"
+          />
+          <p ref="passwordError" class="input-error"></p>
+        </div>
+        <div class="mb-md">
+          <input
+            type="password"
+            class="auth-input radius-lg"
+            placeholder="Password Confirmation"
+            v-model="form.passwordConfirmation"
+            @input="passwordConfValidation()"
+          />
+          <p ref="passwordConfirmationError" class="input-error"></p>
+        </div>
+        <button
+          :disabled="registerLoading"
+          :class="registerLoading ? 'auth-submit-loading' : ''"
+          type="submit"
+          class="auth-submit btn radius-lg mb-md"
         >
-        <p ref="pictureError" class="input-error">Input error</p>
-      </div>
-
-      <div class="mb-md">
-        <input
-          type="password"
-          class="authInput radius-lg"
-          placeholder="Password"
-          v-model="form.password"
-          @input="passwordInput()"
-        />
-        <p ref="passwordError" class="input-error">Input error</p>
-      </div>
-      <div class="mb-md">
-        <input
-          type="password"
-          class="authInput radius-lg"
-          placeholder="Password Confirmation"
-          v-model="form.passwordConfirmation"
-          @input="passwordConfInput()"
-        />
-        <p ref="passwordConfirmationError" class="input-error">Input error</p>
-      </div>
-      <button class="btn radius-lg mb-md" @click="Register()">
-        <span v-if="!registerLoading">Create Account</span>
-        <i v-else class="fas fa-spinner fa-pulse"></i>
-      </button>
-      <span class="text--center"
-        >Already have an account?<router-link to="/login">
-          Sign In</router-link
-        ></span
-      >
-      <!-- </div> -->
+          <span v-if="!registerLoading">Create Account</span>
+          <i v-else class="fas fa-spinner fa-pulse"></i>
+        </button>
+        <span class="text_center"
+          >Already have an account?<router-link :to="{ name: 'Login' }">
+            Sign In</router-link
+          ></span
+        >
+      </form>
     </section>
   </div>
 </template>
@@ -88,7 +93,7 @@ export default {
         picture: null,
         passwordConfirmation: null,
       },
-      Validation: {
+      validation: {
         email: false,
         fullName: false,
         picture: null,
@@ -100,12 +105,12 @@ export default {
   methods: {
     ...mapActions("auth", ["registerUser"]),
     ...mapMutations("auth", ["setRegisterError"]),
-    nameInput() {
+    nameValidation() {
       let fullNameError = this.$refs.fullNameError;
       if (
         /^[A-Za-z]*( [A-Za-z]([-']?[A-Za-z]{1,2})*)+$/.test(this.form.fullName)
       ) {
-        this.Validation.fullName = true;
+        this.validation.fullName = true;
         fullNameError.style.display = "none";
       } else {
         fullNameError.innerHTML =
@@ -113,7 +118,7 @@ export default {
         fullNameError.style.display = "block";
       }
     },
-    choosenImage() {
+    pictureValidation() {
       let picture = this.$refs.picture.files[0];
       let pictureError = this.$refs.pictureError;
       let pictureLabel = this.$refs.pictureLabel;
@@ -121,32 +126,28 @@ export default {
         pictureLabel.innerHTML = picture.name;
         pictureError.style.display = "none";
         this.form.picture = picture;
-        this.Validation.picture = true;
+        this.validation.picture = true;
       } else {
         pictureLabel.innerHTML = "Chose a picture (Max 10Mb)";
         pictureError.innerHTML = "Picture size over 10Mb!";
         pictureError.style.display = "block";
-        this.Validation.picture = false;
-
+        this.validation.picture = false;
         picture = null;
       }
-      // console.log(picture);
-      // console.log(pictureError);
-      // console.log(pictureLabel);
     },
-    emailInput() {
+    emailValidation() {
       let emailError = this.$refs.emailError;
       if (
         /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,4}$/.test(this.form.email)
       ) {
         emailError.style.display = "none";
-        this.Validation.email = true;
+        this.validation.email = true;
       } else {
         emailError.innerHTML = "invalid Email";
         emailError.style.display = "block";
       }
     },
-    passwordInput() {
+    passwordValidation() {
       let passwordError = this.$refs.passwordError;
       if (
         /^(?=.*[0-9])(?=.*[a-z0-9])(?=.*[A-Z0-9])([a-zA-Z0-9]{6,})$/.test(
@@ -154,18 +155,18 @@ export default {
         )
       ) {
         passwordError.style.display = "none";
-        this.Validation.password = true;
+        this.validation.password = true;
       } else {
         passwordError.innerHTML =
           "Password must be 6 characters and contain at least one Number";
         passwordError.style.display = "block";
       }
     },
-    passwordConfInput() {
+    passwordConfValidation() {
       let passwordConfError = this.$refs.passwordConfirmationError;
       if (this.form.password === this.form.passwordConfirmation) {
         passwordConfError.style.display = "none";
-        this.Validation.passwordConfirmation = true;
+        this.validation.passwordConfirmation = true;
       } else {
         passwordConfError.style.display = "block";
         passwordConfError.innerHTML = `Passwords don't match! 🤨 `;
@@ -181,11 +182,11 @@ export default {
     ...mapGetters("auth", ["registerError", "registerLoading"]),
     form_valid: function () {
       if (
-        this.Validation.email &&
-        this.Validation.fullName &&
-        this.Validation.picture != false &&
-        this.Validation.password &&
-        this.Validation.passwordConfirmation
+        this.validation.email &&
+        this.validation.fullName &&
+        this.validation.picture != false &&
+        this.validation.password &&
+        this.validation.passwordConfirmation
       ) {
         return true;
       }
@@ -198,7 +199,7 @@ export default {
       if (val) {
         setTimeout(() => {
           this.setRegisterError(null);
-        }, 3000);
+        }, 4000);
         clearTimeout();
       }
     },
@@ -206,6 +207,6 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import url("../../assets/css/login-register.css");
 </style>

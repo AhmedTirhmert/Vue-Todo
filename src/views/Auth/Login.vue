@@ -1,36 +1,44 @@
 <template>
-  <div class="authContainer">
-    <section class="authForm mt-md radius-md px-md py-md">
-      <h1 class="text--center mt-sm mb-lg">Sign In</h1>
+  <div class="auth-container">
+    <section class="auth-section mt-md radius-md px-md py-md">
+      <h1 class="text_center mt-sm mb-lg">Sign In</h1>
       <app-alert v-if="loginError" :message="loginError" type="danger" />
-      <div class="mb-md">
-        <input
-          type="text"
-          class="authInput radius-lg"
-          placeholder="Email"
-          @input="emailInput()"
-          v-model="Email"
-        />
-        <p ref="emailError" class="input-error">Input error</p>
-      </div>
-      <div class="mb-md">
-        <input
-          type="password"
-          class="authInput radius-lg"
-          v-model="Password"
-          placeholder="Password"
-          ref="passwordInput"
-        />
-      </div>
+      <form class="auth-form" @submit.prevent="Login()">
+        <div class="mb-md">
+          <input
+            type="text"
+            class="auth-input radius-lg"
+            placeholder="Email"
+            @input="emailInput()"
+            v-model="email"
+          />
+          <p ref="emailError" class="input-error">Input error</p>
+        </div>
+        <div class="mb-md">
+          <input
+            type="password"
+            class="auth-input radius-lg"
+            v-model="Password"
+            placeholder="Password"
+            ref="passwordInput"
+          />
+        </div>
 
-      <button class="btn radius-lg mb-md" @click="Login()">
-        <span v-if="!loginLoading">Log In</span>
-        <i v-else class="fas fa-spinner fa-pulse"></i>
-      </button>
-      <span class="text--center"
-        >New here!<router-link to="/register"> Sign up now</router-link></span
-      >
-      <!-- </div> -->
+        <button
+          :disabled="loginLoading"
+          type="submit"
+          :class="loginLoading ? 'auth-submit-loading' : ''"
+          class="auth-submit btn radius-lg mb-md"
+        >
+          <span v-if="!loginLoading">Log In</span>
+          <i v-else class="fas fa-spinner fa-pulse"></i>
+        </button>
+        <span class="text_center"
+          >New here!<router-link :to="{ name: 'Register' }">
+            Sign up now</router-link
+          ></span
+        >
+      </form>
     </section>
   </div>
 </template>
@@ -44,13 +52,13 @@ export default {
   },
   data() {
     return {
-      Email: null,
+      email: null,
       Password: null,
     };
   },
   mounted() {
     if (this.$route.query.email) {
-      this.Email = this.$route.query.email;
+      this.email = this.$route.query.email;
       this.$refs.passwordInput.focus();
     }
   },
@@ -59,7 +67,7 @@ export default {
     ...mapActions("auth", ["loginUser"]),
     emailInput() {
       let emailError = this.$refs.emailError;
-      if (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,4}$/.test(this.Email)) {
+      if (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,4}$/.test(this.email)) {
         emailError.style.display = "none";
       } else {
         emailError.innerHTML = "invalid Email";
@@ -68,7 +76,7 @@ export default {
     },
     Login() {
       this.loginUser({
-        email: this.Email,
+        email: this.email,
         password: this.Password,
       });
     },
@@ -76,19 +84,9 @@ export default {
   computed: {
     ...mapGetters("auth", ["loginError", "loginLoading"]),
   },
-  watch: {
-    loginError(val) {
-      if (val) {
-        setTimeout(() => {
-          this.setLoginError(null);
-        }, 2000);
-        clearTimeout();
-      }
-    },
-  },
 };
 </script>
 
-<style>
+<style scoped>
 @import url("../../assets/css/login-register.css");
 </style>

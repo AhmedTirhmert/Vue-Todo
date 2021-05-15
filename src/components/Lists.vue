@@ -1,14 +1,14 @@
 <template>
-  <div class="listsBox radius-xs">
-    <h2 v-if="Heading" class="radius-sm color--heading2">Lists</h2>
+  <div class="lists-box radius-xs">
+    <h2 v-if="Heading" class="radius-sm color_heading_2">Lists</h2>
 
-    <div v-if="!Lists" class="noListsSection">No Lists Yet</div>
+    <div v-if="!Lists" class="no-lists-section">No Lists Yet</div>
 
-    <section class="listsSection" :class="Heading ? '' : 'py-lg px-md'">
+    <section class="lists-section" :class="Heading ? '' : 'py-lg px-md'">
       <div v-if="Actions" class="new-list-section radius-sm">
         <span
           v-if="!newList.visible"
-          class="text--gray2 text--italic text--center mb-sm"
+          class="text_gray_2 text_italic text_center mb-sm"
           :class="addListLoading ? 'loading' : ''"
           @click="showNewlistSection()"
           >Click to add new List...</span
@@ -59,31 +59,31 @@
         >
           <router-link
             :ref="`Link${list.listId}`"
-            class="listsItem radius-sm"
+            class="lists-item radius-sm"
             :to="{ name: 'List', params: { listId: list.listId } }"
           >
             {{ list.title }}
           </router-link>
           <input
             :ref="`updateListInput${list.listId}`"
-            class="listInput"
+            class="list-input"
             type="text"
             :value="list.title"
-            @keydown.enter="save(list.listId)"
+            @keydown.enter="saveChanges(list.listId)"
           />
           <button
             :ref="`Edit${list.listId}`"
-            @click="editList(list.listId)"
+            @click="showEditListInput(list.listId)"
             v-if="Actions"
-            class="btn radius-lg listAction color--success"
+            class="btn radius-lg list-action color_success"
           >
             <i class="fas fa-pen"></i>
           </button>
           <button
-            @click="save(list.listId)"
+            @click="saveChanges(list.listId)"
             :ref="`Save${list.listId}`"
             v-if="Actions"
-            class="btn radius-lg listAction color--success"
+            class="btn radius-lg list-action color_success"
             style="display: none"
           >
             <i class="fas fa-check"></i>
@@ -91,14 +91,14 @@
           <button
             @click="openDeleteListModal(list.listId)"
             v-if="Actions"
-            class="btn radius-lg listAction color--danger"
+            class="btn radius-lg list-action color_danger"
           >
             <i class="fas fa-trash"></i>
           </button>
         </div>
       </div>
 
-      <div v-if="viewMore" class="viewMoreSection">
+      <div v-if="viewMore" class="view-more-section">
         <router-link
           :to="{ name: 'Lists' }"
           class="btn btn-primary radius-md py-sm px-lg"
@@ -115,7 +115,7 @@
       <template v-slot:header><h1>Delete List</h1> </template>
       <template v-slot:sub-header>
         You sure you wanna delete
-        <br /><b class="color--danger">{{ listDelete.title }}</b></template
+        <br /><b class="color_danger">{{ listDelete.title }}</b></template
       >
       <template v-slot:footer>
         <button class="cancel" @click="closeDeleteListModal()">Cancel</button>
@@ -129,6 +129,7 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from "vuex";
+import methodes from "@/mixins/methods";
 export default {
   name: "userLists",
   props: {
@@ -153,6 +154,7 @@ export default {
       default: false,
     },
   },
+  mixins: [methodes],
   components: {
     DeleteModal: () => import("@/components/DeleteModal"),
   },
@@ -169,23 +171,10 @@ export default {
       },
     };
   },
-  mounted() {
-    console.log(!this.Lists);
-    // this.newList.visible = true;
-  },
   methods: {
     ...mapActions("lists", ["addList", "updateListById", "deleteListById"]),
     ...mapMutations("lists", ["setNewListError", "setDeleteListSuccess"]),
-    titleCase(str) {
-      return str
-        .trim()
-        .toLowerCase()
-        .split(" ")
-        .map(function (word) {
-          return word.replace(word[0], word[0].toUpperCase());
-        })
-        .join(" ");
-    },
+
     showNewlistSection() {
       this.newList.visible = true;
       const newListInput = this.$refs.newListInput;
@@ -193,13 +182,13 @@ export default {
         newListInput.focus();
       });
     },
-    editList(listId) {
+    showEditListInput(listId) {
       this.$refs[`Link${listId}`][0].$el.style.display = "none";
       this.$refs[`updateListInput${listId}`][0].style.display = "block";
       this.$refs[`Edit${listId}`][0].style.display = "none";
       this.$refs[`Save${listId}`][0].style.display = "block";
     },
-    save(listId) {
+    saveChanges(listId) {
       this.$refs[`Link${listId}`][0].$el.style.display = "block";
       this.$refs[`updateListInput${listId}`][0].style.display = "none";
       this.$refs[`Edit${listId}`][0].style.display = "block";
@@ -239,15 +228,10 @@ export default {
         this.newList.visible = false;
       }
     },
-    // addListError() {
-    //   setTimeout(() => {
-    //     this.setNewListError(null);
-    //   }, 3000);
-    // },
   },
 };
 </script>
 
-<style>
+<style scoped>
 @import url("../assets/css/lists-component.css");
 </style>

@@ -1,51 +1,53 @@
 @import url("Variables.css");
-.authContainer {
+.auth-container {
   display: flex;
   justify-content: center;
 }
-.authForm {
+.auth-section {
   border: 1px solid var(--borderPrimaryColor);
   background-color: white;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   width: 100vw;
-  grid-template-columns: repeat();
 }
-.authForm button {
+.auth-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-submit {
   background-color: var(--secondaryColor);
   padding-top: 0.8em;
   padding-bottom: 0.8em;
 }
-.authForm button span,
-.authForm button i {
+.auth-submit span,
+.auth-submit i {
   font-size: 1.2em;
   font-weight: 600;
 }
-
-.authForm button:focus {
-  outline: none;
+.auth-submit-loading {
+  background-color: var(--gray4);
+  cursor: wait;
 }
-/* .authForm button:hover {
-  background-color: var(--silver);
-} */
-.authForm h1 {
+.auth-section h1 {
   font-family: var(--poppins);
   font-size: 2.5em;
   font-weight: bold;
   color: var(--secondaryColor);
 }
-.authForm span {
+.auth-section span {
   font-size: 0.85em;
   font-weight: 600;
 }
-.authForm span a {
+.auth-section span a {
   color: var(--link);
 }
-.authInput::placeholder {
+.auth-input::placeholder {
   color: #adb5bd;
   font-family: var(--ubuntu);
   font-weight: 600;
 }
-.authInput {
+.auth-input {
   border: none;
   padding: 1em 1em;
   background-color: var(--input);
@@ -60,7 +62,7 @@
   font-weight: 500;
   display: none;
 }
-.authFile {
+.auth-file {
   width: 0.1px;
   height: 0.1px;
   opacity: 0;
@@ -68,7 +70,7 @@
   position: absolute;
   z-index: -1;
 }
-.authFile + label {
+.auth-file + label {
   display: inline-block;
   padding: 1em 1em;
   background-color: var(--input);
@@ -77,12 +79,12 @@
   font-weight: 600;
   font-size: 0.9em;
 }
-.authFile + label {
+.auth-file + label {
   cursor: pointer;
   display: flex;
   justify-content: space-between;
 }
-.authFile + label::after {
+.auth-file + label::after {
   font-family: "Font Awesome 5 Free";
   font-size: 1rem;
   font-weight: 700;
@@ -90,17 +92,17 @@
   margin-left: 6px;
   transform: rotate(-45deg);
 }
-.authFile:focus + label,
-.authFile + label:focus {
+.auth-file:focus + label,
+.auth-file + label:focus {
   background-color: var(--input);
 }
-.authInput:focus {
+.auth-input:focus {
   outline: none;
   background-color: beige;
 }
 
 @media screen and (min-width: 1025px) {
-  .authForm {
+  .auth-section {
     width: 35vw;
   }
 }

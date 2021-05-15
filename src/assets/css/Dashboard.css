@@ -8,12 +8,12 @@
   flex-direction: column;
 }
 /* LISTS/TODOS COMUN CSS */
-.listsBox {
+.lists-box {
   border: 1px solid rgba(0, 0, 0, 0.2);
   position: relative;
   margin-bottom: 3em;
 }
-.listsBox > h2 {
+.lists-box > h2 {
   position: relative;
   top: -1.3rem;
   left: 1em;

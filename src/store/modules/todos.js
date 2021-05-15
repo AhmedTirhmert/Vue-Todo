@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { fbFirestore } from "../firebase";
+import { fbFirestore } from "@/firebase";
 // Global Variables
 //where the auth data goes
 const state = {

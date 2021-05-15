@@ -1,7 +1,10 @@
 <template>
-  <div class="mainLayout">
-    <app-header :isOpen="isOpen" @toggle-dd="isOpen = !isOpen" />
-    <main class="mainContent" @click="toggleIt">
+  <div class="main-layout">
+    <app-header
+      :toggleDropDown="toggleDropDown"
+      @toggleDropDown="toggleDropDown = !toggleDropDown"
+    />
+    <main class="main-content" @click="toggleDropDown = false">
       <router-view />
     </main>
   </div>
@@ -14,16 +17,8 @@ export default {
   },
   data() {
     return {
-      isOpen: false,
+      toggleDropDown: false,
     };
-  },
-  methods: {
-    toggleIt() {
-      this.isOpen = false;
-    },
   },
 };
 </script>
-
-<style>
-</style>
