@@ -10,7 +10,8 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _, next) => {
+  console.log(store.getters["auth/isAuth"]);
   if (to.matched.some((record) => record.meta.requireAuth)) {
     if (store.getters["auth/isAuth"]) {
       next();

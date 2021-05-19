@@ -2,14 +2,18 @@
   <div class="auth-container">
     <section class="auth-section mt-md radius-md px-md py-md">
       <h1 class="text_center mt-sm mb-md">Sign Up</h1>
-      <app-alert v-if="registerError" :message="registerError" type="danger" />
-      <form class="auth-form" @submit.prevent="Register()">
+      <app-alert
+        v-if="response.message"
+        :message="response.message"
+        :type="response.type"
+      />
+      <form class="auth-form" @submit.prevent="register">
         <div class="mb-md">
           <input
             type="text"
             class="auth-input radius-lg"
             placeholder="Full Name"
-            @input="nameValidation()"
+            @input="nameValidation"
             v-model="form.fullName"
           />
           <p ref="fullNameError" class="input-error"></p>
@@ -20,7 +24,7 @@
             type="email"
             class="auth-input radius-lg"
             placeholder="Email"
-            @input="emailValidation()"
+            @input="emailValidation"
             v-model="form.email"
           />
           <p ref="emailError" class="input-error"></p>
@@ -46,7 +50,7 @@
             class="auth-input radius-lg"
             placeholder="Password"
             v-model="form.password"
-            @input="passwordValidation()"
+            @input="passwordValidation"
           />
           <p ref="passwordError" class="input-error"></p>
         </div>
@@ -56,17 +60,17 @@
             class="auth-input radius-lg"
             placeholder="Password Confirmation"
             v-model="form.passwordConfirmation"
-            @input="passwordConfValidation()"
+            @input="passwordConfValidation"
           />
           <p ref="passwordConfirmationError" class="input-error"></p>
         </div>
         <button
-          :disabled="registerLoading"
-          :class="registerLoading ? 'auth-submit-loading' : ''"
+          :disabled="loading"
+          :class="loading ? 'auth-submit-loading' : ''"
           type="submit"
           class="auth-submit btn radius-lg mb-md"
         >
-          <span v-if="!registerLoading">Create Account</span>
+          <span v-if="!loading">Create Account</span>
           <i v-else class="fas fa-spinner fa-pulse"></i>
         </button>
         <span class="text_center"
@@ -80,7 +84,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from "vuex";
+import { mapActions } from "vuex";
 export default {
   components: { AppAlert: () => import("@/components/AppAlert.vue") },
   name: "Register",
@@ -100,11 +104,18 @@ export default {
         password: false,
         passwordConfirmation: false,
       },
+      loading: false,
+      response: {
+        type: null,
+        message: null,
+      },
     };
+  },
+  mounted() {
+    this.response.message = null;
   },
   methods: {
     ...mapActions("auth", ["registerUser"]),
-    ...mapMutations("auth", ["setRegisterError"]),
     nameValidation() {
       let fullNameError = this.$refs.fullNameError;
       if (
@@ -132,7 +143,6 @@ export default {
         pictureError.innerHTML = "Picture size over 10Mb!";
         pictureError.style.display = "block";
         this.validation.picture = false;
-        picture = null;
       }
     },
     emailValidation() {
@@ -172,14 +182,29 @@ export default {
         passwordConfError.innerHTML = `Passwords don't match! 🤨 `;
       }
     },
-    Register() {
-      if (this.form_valid) {
-        this.registerUser(this.form);
+    async register() {
+      try {
+        if (this.form_valid) {
+          this.loading = true;
+          this.response.message = null;
+          await this.registerUser({
+            email: this.form.email,
+            password: this.form.password,
+            fullName: this.form.fullName,
+            profilePicture: this.form.picture,
+          });
+          this.loading = false;
+          this.response.type = "success";
+          this.response.message = "Verification link sent to your Email 🙂";
+        }
+      } catch (error) {
+        this.loading = false;
+        this.response.type = "danger";
+        this.response.message = error.message;
       }
     },
   },
   computed: {
-    ...mapGetters("auth", ["registerError", "registerLoading"]),
     form_valid: function () {
       if (
         this.validation.email &&
@@ -192,16 +217,6 @@ export default {
       }
 
       return false;
-    },
-  },
-  watch: {
-    registerError(val) {
-      if (val) {
-        setTimeout(() => {
-          this.setRegisterError(null);
-        }, 4000);
-        clearTimeout();
-      }
     },
   },
 };

@@ -25,13 +25,13 @@ const mutations = {
     state.currentUser = payload;
   },
   setLoginError(state, payload) {
-    Vue.set(state.errors, "loginError", payload);
+    state.errors.loginError = payload;
   },
   setRegisterError(state, payload) {
     Vue.set(state.errors, "registerError", payload);
   },
   setLoginLoading(state, payload) {
-    Vue.set(state.loadings, "login", payload);
+    state.loadings.loginLoading = payload;
   },
   setRegisterLoading(state, payload) {
     Vue.set(state.loadings, "register", payload);
@@ -39,151 +39,87 @@ const mutations = {
 };
 //methods to manipulate state data and triger mutations  can be async REQUESTS TO SERVERS
 const actions = {
-  createUserWithProfilePicture({ commit }, payload) {
-    let User = fbAuth.currentUser;
-    fbStorage
-      .ref(`ProfilePictures/${User.uid}`)
-      .put(payload.picture)
-      .then((res) => {
-        res.ref.getDownloadURL().then((url) => {
-          fbFirestore
-            .collection("Users")
-            .doc(User.uid)
-            .set({
-              user_id: User.uid,
-              fullName: payload.fullName,
-              email: payload.email,
-              picture: url,
-              created_at: Date.now(),
-              uodated_at: Date.now(),
-            })
-            .then(() => {
-              let actionCodeSettings = {
-                url: `${process.env.VUE_APP_HOST_NAME}/login/?email=${User.email}`,
-              };
-
-              User.sendEmailVerification(actionCodeSettings);
-              commit("setRegisterLoading", false);
-              commit(
-                "setRegisterError",
-                "Verification Email was sent to your inbox "
-              );
-            })
-            .catch((error) => {
-              console.error(error.message);
-              commit("setRegisterError", "Something went Wrong :(");
-              commit("setRegisterLoading", false);
-            });
-        });
-      })
-      .catch((error) => {
-        console.error(error.message);
-        commit("setRegisterError", "Something went Wrong :(");
-        commit("setRegisterLoading", false);
-      });
+  async uploadFile(_, { filePath, file }) {
+    let res = await fbStorage.ref(filePath).put(file);
+    return res.ref.getDownloadURL();
   },
-  createUserWithoutProfilePicture({ commit }, payload) {
-    let User = fbAuth.currentUser;
-    fbFirestore
+  async saveUserInDB(_, { userId, fullName, email, picture }) {
+    await fbFirestore
       .collection("Users")
-      .doc(User.uid)
+      .doc(userId)
       .set({
-        user_id: User.uid,
-        fullName: payload.fullName,
-        email: payload.email,
-        picture: defaultAvatarURL,
+        user_id: userId,
+        fullName: fullName,
+        email: email,
+        picture: picture ? picture : defaultAvatarURL,
         created_at: Date.now(),
-      })
-      .then(() => {
-        let actionCodeSettings = {
-          url: `${process.env.VUE_APP_HOST_NAME}/login/?email=${User.email}`,
-        };
+        uodated_at: Date.now(),
+      });
+  },
+  async sendEmailVerification(_, email) {
+    let User = fbAuth.currentUser;
+    let actionCodeSettings = {
+      url: `${process.env.VUE_APP_HOST_URI}/login/?email=${email}`,
+    };
+    await User.sendEmailVerification(actionCodeSettings);
+  },
+  async updateUserInfos(_, { name, pictureURL }) {
+    let user = fbAuth.currentUser
+    await user.updateProfile({
+      displayName: name,
+      photoURL: pictureURL
+    })
+  },
 
-        User.sendEmailVerification(actionCodeSettings);
-        commit(
-          "setRegisterError",
-          "Verification Email was sent to your inbox "
-        );
-        commit("setRegisterLoading", false);
-      })
-      .catch((error) => {
-        console.error(error.message);
-        commit("setRegisterError", "Something went Wrong :(");
-        commit("setRegisterLoading", false);
-      });
+  async registerUser({ dispatch }, { email, password, fullName, profilePicture }) {
+    const user = await fbAuth.createUserWithEmailAndPassword(email, password);
+    let profilePictureURL;
+    if (profilePicture) {
+      profilePictureURL = await dispatch("uploadFile", { filePath: `ProfilePictures/${user.user.uid}`, file: profilePicture });
+    }
+    await dispatch("saveUserInDB", { userId: user.user.uid, fullName: fullName, email: email, picture: profilePictureURL });
+    await dispatch('sendEmailVerification', email)
+    await dispatch("updateUserInfos", { name: fullName, pictureURL: profilePictureURL })
+    fbAuth.signOut()
   },
-  registerUser({ commit, dispatch }, payload) {
-    commit("setRegisterLoading", true);
-    fbAuth
-      .createUserWithEmailAndPassword(payload.email, payload.password)
-      .then(() => {
-        if (payload.picture) {
-          dispatch("createUserWithProfilePicture", payload);
-        } else {
-          dispatch("createUserWithoutProfilePicture", payload);
-        }
-      })
-      .catch((error) => {
-        console.error(error.message);
-        commit("setRegisterError", error.message);
-        commit("setRegisterLoading", false);
-      });
+  async loginUser(_, { email, password }) {
+    try {
+      const user = await fbAuth.signInWithEmailAndPassword(email, password)
+      if (!user.user.emailVerified) {
+        throw "You must verify your Email"
+      }
+      router.push({ name: "Dashboard" })
+    } catch (error) {
+      fbAuth.signOut()
+      if (error.code == 'auth/user-not-found') {
+        throw "Email Or Password Incorrect"
+      }
+      throw error
+      
+    }
   },
-  loginUser({ commit }, payload) {
-    commit("setLoginLoading", true);
-    fbAuth
-      .signInWithEmailAndPassword(payload.email, payload.password)
-      .then(() => {
-        let User = fbAuth.currentUser;
-        if (User.emailVerified) {
-          commit("setCurrentUser", User);
-          router.push({ name: "Dashboard" });
-          commit("setLoginLoading", false);
-        } else {
-          commit("setLoginError", "You must verify your Email to Log In");
-          commit("setLoginLoading", false);
-          fbAuth.signOut();
-        }
-      })
-      .catch((error) => {
-        commit("setLoginError", "Incorrect Email or Password ");
-        console.error(error.message);
-        commit("setLoginLoading", false);
-      });
-  },
-  logoutUser({ commit }) {
+  async logoutUser({ dispatch }) {
     fbAuth.signOut();
-    commit("setCurrentUser", null);
+    await dispatch("HandleAuthStateChange")
     router.push({ name: "Login" });
   },
-  HandleAuthStateChange({ commit, dispatch }) {
-    return new Promise((resolve, reject) => {
-      fbAuth.onAuthStateChanged((User) => {
-        if (User && User.emailVerified) {
-          fbFirestore
-            .collection("Users")
-            .doc(User.uid)
-            .get()
-            .then((res) => {
-              commit("setCurrentUser", res.data());
-              dispatch("lists/getUserLists", null, { root: true });
-              dispatch("todos/getUserRecentTodos", null, { root: true });
-              resolve();
-            })
-            .catch((error) => {
-              console.log(error);
-              reject(error);
-            });
+  HandleAuthStateChange({ commit }) {
+    return new Promise((resolve) => {
+      fbAuth.onAuthStateChanged((user) => {
+        if (user && user.emailVerified) {
+          commit("setCurrentUser", { email: user.email, fullName: user.displayName, picture: user.photoURL });
+          resolve()
         } else {
           commit("setCurrentUser", null);
           commit("lists/resetUserLists", null, { root: true });
           commit("todos/resetListTodos", null, { root: true });
           commit("todos/resetRecentTodos", null, { root: true });
-          resolve();
+          resolve()
         }
-      });
-    });
-  },
+      })
+    })
+
+  }
 };
 //methods to get data from state object and make availible in vue components
 const getters = {
