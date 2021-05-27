@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <template>
   <div class="header" :class="isAuth ? '' : 'flex-center'">
     <!-- <div class="logo"></div> -->
@@ -15,6 +17,9 @@
         />
       </button>
       <ul v-if="toggleDropDown" class="radius-sm">
+        <li>
+          <div class="py-md px-lg dd-user-name">{{ currentUser.fullName }}</div>
+        </li>
         <li class="radius-sm" @click="$emit('toggleDropDown', toggleDropDown)">
           <router-link
             class="py-md px-lg dd-link radius-sm flex justify-space-between"

@@ -1,4 +1,6 @@
-<template >
+<!-- @format -->
+
+<template>
   <transition name="fade">
     <div class="modal" v-if="show">
       <div class="modal-backdrop" @click="modalBackdropClose()" />
@@ -11,15 +13,23 @@
         </div>
 
         <div class="modal-body">
-          <span v-if="!success" class="radius-xl trash-icon"
-            ><i class="fas fa-trash"></i
-          ></span>
-          <span v-else class="radius-xl check-icon"
-            ><i class="fas fa-check"></i
-          ></span>
+          <section v-if="loading">
+            <span v-if="loading" class="radius-xl loading-icon"
+              ><i class="fas fa-sync fa-spin"></i
+            ></span>
+          </section>
+          <section v-else>
+            <span v-if="!success" class="radius-xl trash-icon"
+              ><i class="fas fa-trash"></i
+            ></span>
+
+            <span v-if="success" class="radius-xl check-icon"
+              ><i class="fas fa-check"></i
+            ></span>
+          </section>
         </div>
 
-        <div class="modal-footer">
+        <div v-if="!loading" class="modal-footer">
           <slot v-if="!success" name="footer" />
           <div v-else>
             <button class="cancel" @click="$emit('closeModal')">Close</button>
@@ -38,6 +48,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -47,8 +61,9 @@ export default {
   },
   methods: {
     modalBackdropClose() {
-      this.$emit("modalBackdropClose");
-      this.closeModal;
+      if (!this.loading) {
+        this.$emit("modalBackdropClose");
+      }
     },
     closeModal() {
       this.show = false;
@@ -61,7 +76,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 @import url("../assets/css/delete-modal.css");

@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <template>
   <div class="todo-containner mb-md">
     <div class="todo-content">
@@ -7,8 +9,9 @@
           rows="1"
           type="text"
           v-model.lazy="todo.content"
-          :ref="`autoGrowInput${todoKey}`"
-          @input="resizeTextArea()"
+          :ref="`autoGrowInput${todo.todoId}`"
+          @input="autoResizeTextArea()"
+          @change="chanegingTheTodo"
         />
         <span class="todo-date px-sm text_end text_gray_2 text_italic">{{
           todo.createdAt | fromNow()
@@ -21,7 +24,7 @@
       </button>
       <button
         class="btn radius-lg todo-delete"
-        @click="$emit('deleteTodoById', todoKey)"
+        @click="$emit('deleteTodoById', todo.todoId)"
       >
         <i class="fa"></i>
       </button>
@@ -38,17 +41,13 @@ export default {
   name: "Todo",
   props: {
     todo: {},
-    todoKey: {
-      type: String,
-      required: true,
-    },
   },
   methods: {
     ...mapActions("todos", ["editTodoById", "deleteTodoById", "todoDoneById"]),
-    resizeTextArea() {
-      if (this.$refs[`autoGrowInput${this.todoKey}`]) {
-        this.$refs[`autoGrowInput${this.todoKey}`].style.height = "inherit";
-        let TA = this.$refs[`autoGrowInput${this.todoKey}`];
+    autoResizeTextArea() {
+      if (this.$refs[`autoGrowInput${this.todo.todoId}`]) {
+        this.$refs[`autoGrowInput${this.todo.todoId}`].style.height = "inherit";
+        let TA = this.$refs[`autoGrowInput${this.todo.todoId}`];
         let Computed = window.getComputedStyle(TA);
         let height =
           parseFloat(Computed.paddingTop, 10) +
@@ -57,20 +56,23 @@ export default {
         TA.style.height = `${height - 20}px`;
       }
     },
-    markTodoDone() {
-      this.todoDoneById(this.todoKey);
+    async markTodoDone() {
+      await this.todoDoneById({ todoId: this.todo.todoId });
+    },
+    chanegingTheTodo() {
+      this.editTodoById({
+        todoId: this.todo.todoId,
+        content: this.todo.content,
+      });
+      this.autoResizeTextArea();
     },
   },
   mounted() {
-    this.resizeTextArea();
+    this.autoResizeTextArea();
   },
   watch: {
-    "todo.content"(newContent) {
-      this.editTodoById({
-        todoId: this.todo.todoId,
-        todoContent: newContent,
-      });
-      this.resizeTextArea();
+    "todo.content"() {
+      this.autoResizeTextArea();
     },
   },
 };

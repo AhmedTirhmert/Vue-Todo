@@ -39,6 +39,10 @@ const mutations = {
 };
 //methods to manipulate state data and triger mutations  can be async REQUESTS TO SERVERS
 const actions = {
+  async reloadCurrentUserInfos({ commit }) {
+    const user = fbAuth.currentUser
+    commit("setCurrentUser", { email: user.email, fullName: user.displayName, picture: user.photoURL, user_id: user.uid });
+  },
   async uploadFile(_, { filePath, file }) {
     let res = await fbStorage.ref(filePath).put(file);
     return res.ref.getDownloadURL();
@@ -70,7 +74,6 @@ const actions = {
       photoURL: pictureURL
     })
   },
-
   async registerUser({ dispatch }, { email, password, fullName, profilePicture }) {
     const user = await fbAuth.createUserWithEmailAndPassword(email, password);
     let profilePictureURL;
@@ -78,42 +81,37 @@ const actions = {
       profilePictureURL = await dispatch("uploadFile", { filePath: `ProfilePictures/${user.user.uid}`, file: profilePicture });
     }
     await dispatch("saveUserInDB", { userId: user.user.uid, fullName: fullName, email: email, picture: profilePictureURL });
-    await dispatch('sendEmailVerification', email)
     await dispatch("updateUserInfos", { name: fullName, pictureURL: profilePictureURL })
+    await dispatch('sendEmailVerification', email)
     fbAuth.signOut()
   },
   async loginUser(_, { email, password }) {
     try {
       const user = await fbAuth.signInWithEmailAndPassword(email, password)
       if (!user.user.emailVerified) {
-        throw "You must verify your Email"
+        throw new Error("You must verify your Email")
       }
       router.push({ name: "Dashboard" })
     } catch (error) {
       fbAuth.signOut()
       if (error.code == 'auth/user-not-found') {
-        throw "Email Or Password Incorrect"
+        throw new Error("Email Or Password Incorrect")
       }
       throw error
-      
     }
   },
-  async logoutUser({ dispatch }) {
+  async logoutUser({ commit }) {
     fbAuth.signOut();
-    await dispatch("HandleAuthStateChange")
+    commit("setCurrentUser", null);
     router.push({ name: "Login" });
   },
   HandleAuthStateChange({ commit }) {
     return new Promise((resolve) => {
       fbAuth.onAuthStateChanged((user) => {
         if (user && user.emailVerified) {
-          commit("setCurrentUser", { email: user.email, fullName: user.displayName, picture: user.photoURL });
+          commit("setCurrentUser", { email: user.email, fullName: user.displayName, picture: user.photoURL, user_id: user.uid });
           resolve()
         } else {
-          commit("setCurrentUser", null);
-          commit("lists/resetUserLists", null, { root: true });
-          commit("todos/resetListTodos", null, { root: true });
-          commit("todos/resetRecentTodos", null, { root: true });
           resolve()
         }
       })

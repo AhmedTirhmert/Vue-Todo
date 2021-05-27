@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <template>
   <div class="auth-container">
     <section class="auth-section mt-md radius-md px-md py-md">
@@ -87,21 +89,20 @@ export default {
     },
     async login() {
       try {
+        this.response.message = null;
         this.loading = true;
         await this.loginUser({
           email: this.email,
           password: this.password,
         });
-        this.loading=false
-      } catch(error) {
-        console.log(error);
-        this.loading=false
-        this.response.message=error
-        this.response.type="danger"
+        this.loading = false;
+      } catch (error) {
+        this.loading = false;
+        this.response.message = error.message;
+        this.response.type = "danger";
       }
     },
   },
-  computed: {},
 };
 </script>
 

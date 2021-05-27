@@ -1,11 +1,18 @@
+<!-- @format -->
+
 <template>
   <section>
     <h2 class="color_heading_1 mb-md">Profile</h2>
-    <div class="profile-section radius-sm py-lg px-lg">
+    <form
+      class="profile-section radius-sm py-md px-lg"
+      @submit.prevent="submitChnages"
+      @reset.prevent="deleteAccount"
+    >
       <app-alert
-        v-if="profileError.message"
-        :message="profileError.message"
-        :type="profileError.type"
+        :autoDisappear="true"
+        :message="submitInfo.error.message"
+        :type="submitInfo.error.type"
+        :delay="5"
       />
       <div class="profile-input-container">
         <label>Full Name</label>
@@ -14,8 +21,11 @@
             type="text"
             class="profile-input"
             v-model="profileInfos.fullName"
+            @input="fullNameValidation"
           />
-          <p ref="fullNameError" class="input-error"></p>
+          <p v-if="fullNameValidation" class="input-error">
+            {{ fullNameValidation() }}
+          </p>
         </div>
       </div>
       <div class="profile-input-container">
@@ -26,10 +36,12 @@
             type="text"
             class="profile-input"
             v-model="profileInfos.email"
+            @input="emailValidation"
           />
-          <p ref="emailError" class="input-error">Input error</p>
+          <p v-if="emailValidation" class="input-error">
+            {{ emailValidation() }}
+          </p>
         </div>
-        <span></span>
       </div>
       <div class="profile-input-container">
         <label>Picture</label>
@@ -39,13 +51,15 @@
             class="profile-file-input"
             id="profile-picture"
             accept="image/png,image/jpeg"
-            @change="newProfilePicture"
+            @input="pictureValidation"
             ref="profilePicture"
           />
           <label for="profile-picture" ref="pictureLabel"
             >profile picture (Max 10Mb)</label
           >
-          <p ref="pictureError" class="input-error">Input error</p>
+          <p v-if="pictureError" class="input-error">
+            {{ pictureError() }}
+          </p>
         </div>
       </div>
       <div class="profile-input-container">
@@ -55,8 +69,11 @@
             type="password"
             class="profile-input"
             v-model="profileInfos.password"
+            @input="passwordValidation"
           />
-          <p ref="passwordError" class="input-error">Input error</p>
+          <p v-if="passwordValidation" class="input-error">
+            {{ passwordValidation() }}
+          </p>
         </div>
       </div>
       <div class="profile-input-container">
@@ -66,8 +83,11 @@
             type="password"
             class="profile-input"
             v-model="profileInfos.newPassword"
+            @input="newPasswordValidation"
           />
-          <p ref="newPasswordError" class="input-error">Input error</p>
+          <p v-if="newPasswordValidation" class="input-error">
+            {{ newPasswordValidation() }}
+          </p>
         </div>
       </div>
       <div class="profile-input-container">
@@ -77,40 +97,50 @@
             type="password"
             class="profile-input"
             v-model="profileInfos.newPasswordConf"
+            @input="newPasswordConfValidation"
           />
-          <p ref="newPasswordConfError" class="input-error"></p>
+          <p
+            v-if="newPasswordConfValidation"
+            ref="newPasswordConfError"
+            class="input-error"
+          >
+            {{ newPasswordConfValidation() }}
+          </p>
         </div>
       </div>
       <button
         class="btn profile-btn py-sm radius-lg"
-        :class="!isFormValid ? 'btn-disabled' : ''"
-        @click="submitChnages()"
-        :disabled="!isFormValid"
+        :class="submitInfo.loading ? 'btn-disabled' : ''"
+        type="submit"
+        :disabled="submitInfo.loading"
       >
-        <span v-if="!profileLoading">Save Changes</span>
+        <span v-if="!submitInfo.loading">Save Changes</span>
         <i v-else class="fas fa-spinner fa-pulse"></i>
       </button>
-    </div>
+      <div class="delete-account">
+        <button type="reset">Delete Account!</button>
+      </div>
+    </form>
   </section>
 </template>
 
-
 <script>
 import { mapActions, mapGetters, mapMutations } from "vuex";
+import methods from "@/mixins/methods";
 export default {
   name: "Profile",
+  mixins: [methods],
   components: {
     AppAlert: () => import("@/components/AppAlert"),
   },
   data: function () {
     return {
-      formValidation: {
-        fullName: null,
-        email: null,
-        picture: null,
-        password: null,
-        newPassword: null,
-        newPasswordConf: null,
+      submitInfo: {
+        loading: false,
+        error: {
+          message: null,
+          type: "danger",
+        },
       },
       profileInfos: {
         fullName: null,
@@ -125,11 +155,94 @@ export default {
   methods: {
     ...mapActions("profile", ["updateProfileInfos"]),
     ...mapMutations("profile", ["resetError"]),
-    submitChnages() {
-      this.updateProfileInfos(this.profileInfos);
+    deleteAccount() {
+      console.log("DELETING ACCOUNT");
     },
-    newProfilePicture(event) {
-      this.profileInfos.picture = event.target.files[0];
+    async submitChnages() {
+      try {
+        this.submitInfo.loading = true;
+        this.submitInfo.error.message = null;
+        await this.updateProfileInfos({
+          fullName: this.profileInfos.fullName,
+          email: this.profileInfos.email,
+          profilePicture: this.profileInfos.picture,
+          currentPassword: this.profileInfos.password,
+          newPassword: this.profileInfos.newPassword,
+        });
+        this.submitInfo.loading = false;
+        this.submitInfo.error.message = "Changes Saved Successfully 👍";
+        this.submitInfo.error.type = "success";
+      } catch (error) {
+        this.submitInfo.error.type = "danger";
+        this.submitInfo.loading = false;
+        this.submitInfo.error.message = error.message;
+      }
+    },
+    fullNameValidation() {
+      if (
+        /^[A-Za-z0-9]*( [A-Za-z0-9]([-']?[A-Za-z0-9]{1,2})*)+$/.test(
+          this.profileInfos.fullName
+        )
+      ) {
+        return null;
+      } else {
+        return "Full name must consist of First Name and Last Name";
+      }
+    },
+    emailValidation() {
+      if (
+        /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,4}$/.test(
+          this.profileInfos.email
+        )
+      ) {
+        return null;
+      } else {
+        return "invalid Email";
+      }
+    },
+    pictureValidation(event) {
+      if (event) {
+        this.profileInfos.picture = event.target.files[0];
+      }
+    },
+    pictureError() {
+      let pictureLabel = this.$refs.pictureLabel;
+      if (
+        this.profileInfos.picture &&
+        this.profileInfos.picture.size / 1048576 < 10
+      ) {
+        pictureLabel.innerHTML = this.profileInfos.picture.name;
+        return null;
+      } else if (this.profileInfos.picture === null) {
+        return null;
+      } else {
+        if (pictureLabel) {
+          pictureLabel.innerHTML = "profile picture (Max 10Mb)";
+        }
+        return "Picture size over 10Mb!";
+      }
+    },
+    passwordValidation() {
+      return null;
+    },
+    newPasswordValidation() {
+      if (
+        !this.profileInfos.newPassword ||
+        /^(?=.*[0-9])(?=.*[a-z0-9])(?=.*[A-Z0-9])([a-zA-Z0-9]{6,})$/.test(
+          this.profileInfos.newPassword
+        )
+      ) {
+        return null;
+      } else {
+        return "Password must be 6 characters and contain at least one Number";
+      }
+    },
+    newPasswordConfValidation() {
+      if (this.profileInfos.newPassword === this.profileInfos.newPasswordConf) {
+        return null;
+      } else {
+        return `Passwords don't match! 🤨 `;
+      }
     },
   },
 
@@ -143,120 +256,20 @@ export default {
     ...mapGetters("profile", ["profileLoading", "profileError"]),
     isFormValid() {
       if (
-        this.formValidation.fullName &&
-        this.formValidation.email &&
-        this.formValidation.password &&
-        this.formValidation.newPasswordConf != false &&
-        this.formValidation.newPassword != false &&
-        this.formValidation.picture != false
+        this.fullNameValidation() == null &&
+        this.emailValidation() == null &&
+        this.pictureValidation() == null &&
+        this.newPasswordValidation() == null &&
+        this.newPasswordConfValidation() == null
       ) {
         return true;
       }
       return false;
     },
   },
-  watch: {
-    "profileInfos.fullName"() {
-      let fullNameError = this.$refs.fullNameError;
-      if (
-        /^[A-Za-z]*( [A-Za-z]([-']?[a-z]{1,2})*)+$/.test(
-          this.profileInfos.fullName
-        )
-      ) {
-        this.formValidation.fullName = true;
-        fullNameError.style.display = "none";
-      } else {
-        this.formValidation.fullName = false;
-        fullNameError.innerHTML =
-          "Full name must consist of First Name and Last Name";
-        fullNameError.style.display = "block";
-      }
-    },
-    "profileInfos.email"() {
-      let emailError = this.$refs.emailError;
-      if (
-        /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,4}$/.test(
-          this.profileInfos.email
-        )
-      ) {
-        emailError.style.display = "none";
-        this.formValidation.email = true;
-      } else {
-        this.formValidation.email = false;
-        emailError.innerHTML = "invalid Email";
-        emailError.style.display = "block";
-      }
-    },
-    "profileInfos.newPassword"() {
-      let passwordError = this.$refs.newPasswordError;
-      if (
-        /^(?=.*[0-9])(?=.*[a-z0-9])(?=.*[A-Z0-9])([a-zA-Z0-9]{6,})$/.test(
-          this.profileInfos.newPassword
-        )
-      ) {
-        passwordError.style.display = "none";
-        this.formValidation.newPassword = true;
-        if (
-          this.profileInfos.newPassword != this.profileInfos.newPasswordConf
-        ) {
-          this.formValidation.newPasswordConf = false;
-        } else {
-          let passwordConfError = this.$refs.newPasswordConfError;
-          passwordConfError.style.display = "none";
-          this.formValidation.newPasswordConf = true;
-        }
-      } else {
-        passwordError.innerHTML =
-          "Password must be 6 characters and contain at least one Number";
-        this.formValidation.newPassword = false;
-        passwordError.style.display = "block";
-      }
-    },
-    "profileInfos.newPasswordConf"() {
-      let passwordConfError = this.$refs.newPasswordConfError;
-      if (this.profileInfos.newPassword === this.profileInfos.newPasswordConf) {
-        passwordConfError.style.display = "none";
-        this.formValidation.newPasswordConf = true;
-      } else {
-        passwordConfError.style.display = "block";
-        passwordConfError.innerHTML = `Passwords don't match! 🤨 `;
-        this.formValidation.newPasswordConf = false;
-      }
-    },
-    "profileInfos.password"() {
-      if (this.profileInfos.password) {
-        this.formValidation.password = true;
-      } else {
-        this.formValidation.password = false;
-      }
-    },
-    "profileInfos.picture"() {
-      let pictureLabel = this.$refs.pictureLabel;
-      let pictureError = this.$refs.pictureError;
-      if (this.profileInfos.picture.size / 1048576 < 10) {
-        pictureLabel.innerHTML = this.profileInfos.picture.name;
-        pictureError.style.display = "none";
-        this.formValidation.picture = true;
-      } else {
-        pictureLabel.innerHTML = "profile picture (Max 10Mb)";
-        pictureError.innerHTML = "Picture size over 10Mb!";
-        pictureError.style.display = "block";
-        this.profileInfos.picture = null;
-      }
-    },
-    "profileError.message"(val) {
-      if (val) {
-        setTimeout(() => {
-          this.resetError();
-        }, 4000);
-      }
-    },
-  },
 };
 </script>
-
 
 <style scoped>
 @import url("../assets/css/Profile.css");
 </style>
-

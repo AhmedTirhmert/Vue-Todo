@@ -1,3 +1,4 @@
+import moment from 'moment'
 export default {
   methods: {
     titleCase(str) {
@@ -10,5 +11,8 @@ export default {
         })
         .join(" ");
     },
+    pictureUploadTimestamp(val) {
+      return moment(val).format('MM_DD_YYYY_h_mm_ss_a');
+    }
   },
 };

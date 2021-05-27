@@ -1,3 +1,5 @@
+/** @format */
+
 @import url("Variables.css");
 /* ------------TEXT COLORS CLESSES------------ */
 .text_gray_1 {
@@ -203,6 +205,9 @@
 /* ----------------------FLEX---------------------- */
 .flex {
   display: flex;
+}
+.flex-c {
+  flex-direction: column;
 }
 .justify-space-between {
   justify-content: space-between !important;

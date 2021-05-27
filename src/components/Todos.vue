@@ -1,13 +1,14 @@
+<!-- @format -->
+
 <template>
   <div class="lists-box radius-xs">
     <h2 class="radius-sm color_heading_2">Latest Todos</h2>
     <section class="todos-section">
-      <div v-if="Object.keys(Todos).length > 0">
+      <div v-if="Todos.length > 0">
         <todo
           v-for="(todo, key) in Todos"
-          :key="todo.id"
+          :key="key"
           :todo="todo"
-          :todoKey="key"
           @deleteTodoById="deleteTodoById"
           :Editable="false"
         />
@@ -16,7 +17,7 @@
     </section>
   </div>
 </template>
-   
+
 <script>
 export default {
   name: "Todos",
@@ -25,7 +26,7 @@ export default {
   },
   props: {
     Todos: {
-      type: Object,
+      type: Array,
       required: true,
     },
   },

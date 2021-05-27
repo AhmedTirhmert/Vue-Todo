@@ -1,3 +1,5 @@
+/** @format */
+
 .profile-section {
   display: grid;
   grid-template-columns: 1fr;
@@ -22,7 +24,8 @@
   font-weight: 500;
   font-family: var(--ubuntu);
   font-size: 1rem;
-  padding-top: 1em;
+  margin-top: auto;
+  margin-bottom: auto;
   margin-right: auto;
 }
 .profile-input-section {
@@ -34,7 +37,18 @@
   padding-top: 0.2em;
   padding-left: 1.5em;
   font-weight: 500;
-  display: none;
+}
+.delete-account {
+  text-align: center;
+  margin-top: -0.5rem;
+}
+.delete-account button {
+  color: var(--danger);
+  cursor: pointer;
+  background-color: transparent;
+  font-weight: 700;
+  font-size: 0.7em;
+  border: none;
 }
 .profile-input {
   border: none;

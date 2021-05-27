@@ -1,3 +1,5 @@
+/** @format */
+
 .modal {
   position: fixed;
   top: 0;
@@ -40,7 +42,7 @@
   padding: 20px 20px 10px;
   font-size: 1.7rem;
 }
-.modal-body {
+.modal-body > section {
   padding: 10px 20px 10px;
   overflow: auto;
   display: flex;
@@ -55,6 +57,17 @@
 .trash-icon > i {
   color: rgba(255, 33, 33, 0.8);
   font-size: 7rem;
+}
+.loading-icon {
+  padding: 2.5rem 3rem;
+}
+.loading-icon > i {
+  color: var(--primaryColor);
+  font-size: 7rem;
+}
+.modal-loading {
+  background-color: var(--gray4) !important;
+  cursor: wait !important;
 }
 .check-icon {
   border: 5px solid var(--primaryColor);
@@ -114,10 +127,10 @@
 }
 @media screen and (max-width: 500px) {
   .modal-footer {
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: 1em;
   }
-  .modal-body {
+  .modal-body > section {
     margin-bottom: 1rem;
   }
   .modal-footer button {

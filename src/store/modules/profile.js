@@ -1,5 +1,6 @@
-import Vue from "vue";
-import { fbStorage, fbAuth, fbFirestore, fb_auth } from "@/firebase";
+// import Vue from "vue";
+import moment from 'moment'
+import { fbStorage, fbAuth, fb_auth } from "@/firebase";
 // Global Variables
 //where the auth data goes
 const state = {
@@ -11,163 +12,123 @@ const state = {
 };
 //methods to manipulate state data can't be async INSTANT CHANGES
 const mutations = {
-  setLoading(state, payload) {
-    Vue.set(state, "loading", payload);
-  },
-  setError(state, payload) {
-    Vue.set(state.profileAlert, "type", payload.type);
-    Vue.set(state.profileAlert, "message", payload.message);
-  },
-  resetError(state) {
-    Vue.set(state.profileAlert, "type", null);
-    Vue.set(state.profileAlert, "message", null);
-  },
+
 };
 //methods to manipulate state data and triger mutations  can be async REQUESTS TO SERVERS
 const actions = {
-  updateProfilePicture({ rootState }, picture) {
-    return new Promise((resolve, reject) => {
-      if (picture) {
-        let pictureName = `${rootState.auth.currentUser.user_id}_${Date.now()}`;
-        fbStorage
-          .ref(`ProfilePictures/${pictureName}`)
-          .put(picture)
-          .then((res) => {
-            res.ref
-              .getDownloadURL()
-              .then((url) => {
-                resolve(url);
-              })
-              .catch((error) => {
-                reject(error.message);
-              });
-          })
-          .catch((error) => {
-            reject(error.message);
-          });
-      } else {
-        resolve(rootState.auth.currentUser.picture);
-      }
-    });
+  pictureUploadTimestamp(_, val) {
+    return moment(val).format('MM_DD_YYYY_h_mm_ss');
   },
-  updateProfilePassword(conext, password) {
-    return new Promise((resolve, reject) => {
-      if (password) {
-        let User = fbAuth.currentUser;
-        User.updatePassword(password)
-          .then(() => {
-            resolve();
-          })
-          .catch((error) => {
-            console.error(error);
-            reject(error.message);
-          });
-      } else {
-        resolve();
-      }
-    });
-  },
-  updateProfileEmail({ rootState }, email) {
-    return new Promise((resolve, reject) => {
-      if (email != rootState.auth.currentUser.email) {
-        let User = fbAuth.currentUser;
-        User.updateEmail(email)
-          .then(() => {
-            console.log("New Email", User.email);
-            let actionCodeSettings = {
-              url: `${process.env.VUE_APP_HOST_NAME}/login/?email=${email}`,
-            };
-            User.sendEmailVerification(actionCodeSettings);
-            resolve(email);
-          })
-          .catch((error) => {
-            console.error(error);
+  async updateProfilePicture({ rootState, dispatch }, picture) {
+    try {
+      const profilePictureTimestampName = await dispatch("pictureUploadTimestamp", Date.now())
+      const profilePictureRef = fbStorage.ref(`ProfilePictures/${rootState.auth.currentUser.user_id}/${profilePictureTimestampName}`)
+      const uploadResponse = await profilePictureRef.put(picture)
+      return uploadResponse.ref.getDownloadURL()
+    } catch (error) {
+      throw new Error('Something wrong happend while uploading you picture 🙁! Try again later ⏳')
+    }
 
-            reject(error.message);
-          });
-      } else {
-        resolve(rootState.auth.currentUser.email);
-      }
-    });
   },
-  reauthenticateUser(context, currentPassword) {
-    return new Promise((resolve, reject) => {
-      let User = fbAuth.currentUser;
-      let cred = fb_auth.EmailAuthProvider.credential(
-        User.email,
+  async updateProfilePassword({ dispatch }, { currentPassword, newPassword }) {
+    await dispatch('reAuthenticateUser', currentPassword)
+    const user = fbAuth.currentUser;
+    await user.updatePassword(newPassword)
+
+
+  },
+  async updateProfileEmail({ dispatch }, { newEmail, currentPassword }) {
+    await dispatch('reAuthenticateUser', currentPassword)
+    const user = fbAuth.currentUser;
+    const actionCodeSettings = {
+      url: `${process.env.VUE_APP_HOST_URI}/login/?email=${newEmail}`,
+    };
+    await user.updateEmail(newEmail)
+    await user.sendEmailVerification(actionCodeSettings);
+
+
+  },
+  async reAuthenticateUser(_, currentPassword) {
+    try {
+      const user = fbAuth.currentUser;
+      const cred = fb_auth.EmailAuthProvider.credential(
+        user.email,
         currentPassword
       );
-      User.reauthenticateWithCredential(cred)
-        .then(() => {
-          resolve();
-        })
-        .catch(() => {
-          reject("Incorrect Password");
-        });
-    });
+      const resp = await user.reauthenticateWithCredential(cred)
+      console.log("Reauthenticate response => ", resp);
+    } catch (error) {
+      throw new Error('Invalid Password')
+    }
+
   },
-  updateProfileInfos({ commit, rootState, dispatch }, payload) {
-    commit("setLoading", true);
-    dispatch("reauthenticateUser", payload.password)
-      .then(() => {
-        dispatch("updateProfilePicture", payload.picture)
-          .then((url) => {
-            dispatch("updateProfilePassword", payload.newPassword)
-              .then(() => {
-                dispatch("updateProfileEmail", payload.email)
-                  .then((newEmail) => {
-                    fbFirestore
-                      .collection("Users")
-                      .doc(rootState.auth.currentUser.user_id)
-                      .update({
-                        fullName: payload.fullName,
-                        email: newEmail,
-                        picture: url,
-                        updated_at: Date.now(),
-                      })
-                      .then(() => {
-                        commit("setError", {
-                          message: "Credentials Updated Successfully",
-                          type: "success",
-                        });
-                        commit("setLoading", false);
-                      });
-                  })
-                  .catch((error) => {
-                    console.error(error);
-                    commit("setError", {
-                      message: error,
-                      type: "danger",
-                    });
-                    commit("setLoading", false);
-                  });
-              })
-              .catch((error) => {
-                console.error(error);
-                commit("setError", {
-                  message: error,
-                  type: "danger",
-                });
-                commit("setLoading", false);
-              });
-          })
-          .catch((error) => {
-            console.error(error);
-            commit("setError", {
-              message: error,
-              type: "danger",
-            });
-            commit("setLoading", false);
-          });
+  async updateUserInfo({ dispatch }, changes) {
+    console.log("CHANGES ARE => ", changes);
+    const user = fbAuth.currentUser
+    if (Object.keys(changes).length == 2) {
+      await user.updateProfile({
+        displayName: changes.fullName,
+        photoURL: changes.profilePictureURL
       })
-      .catch((error) => {
-        console.error(error);
-        commit("setError", {
-          message: error,
-          type: "danger",
-        });
-        commit("setLoading", false);
-      });
+    } else {
+      switch (Object.keys(changes)[0]) {
+        case "profilePictureURL":
+          await user.updateProfile({
+            photoURL: changes.profilePictureURL
+          })
+          break;
+        case "fullName":
+          await user.updateProfile({
+            displayName: changes.fullName,
+          })
+          break;
+        default:
+          break;
+      }
+    }
+    dispatch('auth/reloadCurrentUserInfos', null, { root: true })
+  },
+  async updateProfileInfos({ dispatch }, { fullName, email, profilePicture, currentPassword, newPassword }) {
+    try {
+      console.log({ fullName: fullName, email: email, profilrPicture: profilePicture, currentPassword: currentPassword, newPassword: newPassword });
+      const changes = {}
+      if (profilePicture) {
+        changes.profilePictureURL = await dispatch('updateProfilePicture', profilePicture)
+      }
+      if (await dispatch('isNameUpdated', fullName)) {
+        changes.fullName = fullName
+      }
+      if (await dispatch('isEmailUpdated', email)) {
+        await dispatch('updateProfileEmail', { currentPassword: currentPassword, newEmail: email })
+      }
+      if (await dispatch('isPasswordUpdated', newPassword)) {
+        await dispatch('updateProfilePassword', { newPassword: newPassword, currentPassword: currentPassword })
+      }
+      if (Object.keys(changes).length > 0) {
+        await dispatch("updateUserInfo", changes)
+      }
+    } catch (error) {
+      throw new Error(error.message)
+    }
+  },
+  // UTILITY ACTIONS
+  isEmailUpdated({ rootState }, email) {
+    if (rootState.auth.currentUser.email !== email) {
+      return true
+    }
+    return false
+  },
+  isNameUpdated({ rootState }, fullName) {
+    if (rootState.auth.currentUser.fullName !== fullName) {
+      return true
+    }
+    return false
+  },
+  isPasswordUpdated(_, newPassword) {
+    if (newPassword) {
+      return true
+    }
+    return false
   },
 };
 //methods to get data from state object and make availible in vue components

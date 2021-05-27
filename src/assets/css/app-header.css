@@ -1,3 +1,5 @@
+/** @format */
+
 @import url("Variables.css");
 
 .header {
@@ -72,6 +74,14 @@
   outline: none;
   width: 100%;
   background-color: transparent;
+}
+.user-dropdown ul li .dd-user-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  background-color: var(--primaryColor);
+  color: white;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
 }
 .user-dropdown ul li a:hover {
   background-color: #6a8c70;
